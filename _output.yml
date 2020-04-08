@@ -1,0 +1,26 @@
+bookdown::gitbook:
+  css: style.css
+  config:
+    toc:
+      toc_depth: 4
+      collapse: none
+      before: |
+        <li><a href="./index.html">R Recipes for Common Medical Projects</a></li>
+        <li><a href="./_main.pdf">PDF version of book</a></li>
+        <li><a href="./data.zip">Download data</a></li>
+      after: |
+        <li><a href="https://bookdown.org" target="_blank">Published with bookdown</a></li>
+    download: pdf
+bookdown::pdf_book:
+  includes:
+    in_header: preamble.tex
+    after_body: at_end.tex
+  latex_engine: pdflatex
+  citation_package: natbib
+  keep_tex: yes
+  template: null
+  pandoc_args: --top-level-division=chapter
+  toc_depth: 4
+  toc_appendix: yes
+
+

@@ -1,0 +1,5 @@
+new_session: yes
+title: "R Recipes for Common Medical Projects"
+author: "The R Team at Mayo Clinic"
+description: "This book provides some coding examples of typical small research studies"
+documentclass: book
