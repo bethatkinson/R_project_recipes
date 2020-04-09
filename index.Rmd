@@ -1,0 +1,135 @@
+---
+title: "R Recipes for Common Medical Projects"
+site: bookdown::bookdown_site
+bibliography: [refer.bib]
+biblio-style: apalike
+link-citations: yes
+---
+
+# {-}
+
+
+```{r setup, fig.align='center', echo=FALSE, include=identical(knitr:::pandoc_to(), 'html'), message=FALSE}
+knitr::include_graphics('images/recipe-clipart-BiaE8BLMT.gif', dpi = NA)
+
+source('setup.R')
+library(methods)
+```
+
+# Preface {-}
+
+
+This book contains R recipes for typical analyses done for medical research projects.  The objectives of this book:
+
+* Create Mock projects and analyze the data using R
+* Give people code snippets that they can use for their own projects
+* Show how the various packages and functions fit together
+* Recommend key packages for summarizing data 
+* Provide links for further study
+* Model best practices for coding
+* Encourage the use of RStudio and R markdown
+
+The assumption is that users will have some basic knowledge of R.  Instead of re-creating introductory information or extended lists of options, we have chosen to provide one way of doing the analysis (with a perhaps a few more at the end of each scenario).  Links are provided to other resources for more education. 
+
+## Getting Started
+
+* Although not required, we strongly encourage that users work through these examples using RStudio.  RStudio is an integrated environment that includes an editor to write code, a console to execute code, a workspace to view objects in your session, a help window, and much more.  Information on using RStudio can be found at [https://moderndive.netlify.com/1-getting-started.html](https://moderndive.netlify.com/1-getting-started.html). 
+
+* Most of the functions used in this book are from base R or tidyverse packages (other packages will be described, when used, throughout this book).  Direct links to packages used for each scenario are included at the end of the scenarios. 
+
+    - Tidyverse is a collection of packages designed to work together to solve data science problems.  The figure below includes the stages of an analysis and the tidyverse packages developed for each stage.
+
+```{r echo=FALSE}
+knitr::include_graphics('images/Tidyverse.png')
+```
+
+Core tidyverse packages can be loaded into your R session with `library(tidyverse)`. The function `tidyverse_packages()` details what packages are in the `tidyverse` while the `search()` command shows what packages have been loaded.  There are additional packages that are considered a part of the tidyverse that are not automatically loaded.  Highlights of some of the key tidyverse packages are shown in the appendix. 
+
+```{r echo=TRUE, message=FALSE}
+library(tidyverse) # load basic tidyverse packages
+search() # see what was loaded
+
+tidyverse_packages(include_self=TRUE) # list all packages in tidyverse
+```
+
+## R markdown
+
+R markdown (file extention `.Rmd`) is a simple way to integrate R output and text, then output as HTML, PDF, or Word. The syntax is pretty basic (e.g., a bulleted list is simply an astrix `*` followed by text).  R markdown is much easier to compile and explore using RStudio, thought it can be run using R from a terminal window.  There is a lot of documentation available on getting started with R Markdown including:
+
+* [RStudio cheatsheets](https://www.rstudio.com/resources/cheatsheets/)
+* [RStudio webinar archives](https://www.rstudio.com/resources/webinars/)
+
+
+## The Data
+
+There are separate datasets used for each scenario.  They are based on real data but certain variables are simulated or perturbed.  Patient ID numbers have all been fabricated.  
+
+You can try the exercises out by first [downloading the data]( ) to your home directory or read in the data from the Github page using the provided code.  The exercises assume that you have the files in a subdirectory called "data" that is in the same directory as your programs.
+
+## Scenarios  
+
+Scenario 1: Getting Familiar with a New Project
+
+* In this scenario, you are starting a new project and want to get familiar with the data.  It covers:
+    - Import Data 
+    - Explore Data 
+          + Identify and deal with strange values and duplicate observations
+          + Generate summary statistics
+    - Plot Data
+    - Fit a simple model
+
+Scenario 2: Modeling and Plotting with Cleaned Data 
+
+* In this scenario, you already cleaned your data but want to do more complex models and plots.  
+    - Deal with missing data
+    - Plot Kaplan Meier & cumulative incidence curves
+    - Run linear, logistic & Cox models
+            
+Scenario 3: Working with Multiple Observations per Subject 
+
+* In this scenario you will work with multiple observations per subject as is often found in longitudinal data.
+     - Explore and clean baseline data 
+     - Using a cleaned version of the full dataset (up to 4 visits per subject), transform the data from 1 obs/subject to 1 obs/subject/visit. 
+     - Plot the data with separate lines for each subject
+     - Fit linear models and linear mixed effects models
+
+## Finding help
+
+There are several ways to find additional help. 
+
+* Using the help function.  These are to remind the user of the argument names, but are not extensive.
+
+```
+help(foo)       # brief help/syntax about function foo
+?foo            # same thing
+example(foo)    # show an example of function foo
+apropos("foo")  # list all functions containing the string "foo"
+```
+
+* Vignettes.  These generally provide more detailed examples if they are available.
+
+```
+vignette()         # show available vignettes in loaded packages
+vignette("foo")    # show specific vignette
+```
+
+Or search the web for "R vignette foo"
+
+* Try one these sites
+    + [Quick-R](https://www.statmethods.net/index.html)
+    + [stack overflow](https://stackoverflow.com/)
+    + [Statistical tools for high-throughput data analysis (STHDA)](http://www.sthda.com/english/)
+    + [Use package cheat sheets](https://www.rstudio.com/resources/cheatsheets/)
+    + [RStudio Online Learning](https://www.rstudio.com/online-learning/)
+    
+* Google tips
+    + Use key "R" words like ggplot: [ggplot add horizontal line](https://www.google.com/search?q=ggplot+add+horizontal+line)
+    + Check the date of the posting, especially for code relating to the tidyverse.  It is still relatively new and the coding has changed over time.  
+
+## Disclosure
+
+The solutions presented here are one way to do things (usually the "easy" way), and there was a lot of discussion about which was the "easy" way. Alternative solutions are presented in the appendix.
+
+## Contributors
+
+This series of examples was created by Beth Atkinson, Brendan Broderick, Erin Carlson, Krista Goergen, Mike Golafshar, Ethan Heinzen, Katie Kunze, Liz Lesser, Peter Martin, Ryan Lennon.  
