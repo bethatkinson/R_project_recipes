@@ -104,7 +104,7 @@ View(dat1)
 ![](images/View_data.png)
 
 Here is some simple code that prints out the variable names and their classes using the functions `sapply()` and `class()`.  [sapply](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/lapply) is a function that looks at each element within a list (here, each variable) and runs the specified function (here, `class()`).  Results are returned as a vector.  Then, the `knitr` package includes the `kable` function which makes pretty default tables, especially for reports. 
-In the output below, the `class()` function is returning the class of each variable. Typical R classes for variables in a dataset include: character, numeric, integer, Date, logical, factor. More information on classes and data types can be found in the [New Employee R Training Material](http://bsiweb.mayo.edu/sites/default/files/datatypesandstructures.docx).
+In the output below, the `class()` function is returning the class of each variable. Typical R classes for variables in a dataset include: character, numeric, integer, Date, logical, factor. More information on classes and data types can be found in Hadley Wickham's book [Advanced R](https://adv-r.hadley.nz/base-types.html).
 
 ```{r}
 library(knitr)
@@ -125,7 +125,7 @@ library(summarytools)
 
 # Settings to work well in markdown document (try running default settings interactively)
 dfSummary(dat1, plain.ascii=FALSE, style='grid',
-          graph.col=FALSE, omit.headings=TRUE)
+          graph.col=FALSE, headings=TRUE)
 
 # Save the results to an external file (includes plots!)
 print(dfSummary(dat1), file='dat1.html')
@@ -133,7 +133,7 @@ print(dfSummary(dat1), file='dat1.html')
 
 See the [external file version](dat1.html).
 
-Another option is to use the `tableby()` function that is available in the Mayo package `arsenal`. Tableby is a fantastic function for quick summaries and the output is very similar to the SAS macro `%table()`. This function allows you to summarize the data stratified by some "by" variable or overall without any stratification. The code `~ sex + arm + age + bmi` is a formula.  If you wanted to stratify by a variable you would list the stratification variable on the left hand side of the `~`.   The `tableby` function does all the calculations, but it doesn't create the information in a nice format.  The `summary()` function pulls everything together into a nice table.  Note that when you type `summary` here you are actually using `summary.tableby()`.  This is important when looking for help with summarizing the `tableby` output.
+Another option is to use the `tableby()` function that is available in the Mayo package `arsenal`. Tableby is a fantastic function for quick summaries for data exploration or reporting "table 1" describing the cohort. This function allows you to summarize the data stratified by some "by" variable or overall without any stratification. The code `~ sex + arm + age + bmi` is a formula.  If you wanted to stratify by a variable you would list the stratification variable on the left hand side of the `~`.   The `tableby` function does all the calculations, but it doesn't create the information in a nice format.  The `summary()` function pulls everything together into a nice table.  Note that when you type `summary` here you are actually using `summary.tableby()`.  This is important when looking for help with summarizing the `tableby` output.
 
 If you want to look at the summary in your console window, you might want to use `summary(tab1, text=T)`. In order for the table to look nice within an R markdown (knitr) report, you just need to specify
 `results="asis"` when creating the r chunk. This changes the layout slightly (compresses it) and bolds the variable names. 
@@ -197,20 +197,20 @@ dat1$sex <- case_when(
 Mistakes in data entry occur all the time. It is wise to check for duplicate records and/or more than one record per unique patient. There are a few different tools that can be used to check for duplicate observations including the functions `duplicated()` and `dplyr::distinct()`.
 
 ```{r duplicates}
-# count how many times each clinic number appears in dat1  
-table(table(dat1$clinic))
+# count how many times each id appears in dat1  
+table(table(dat1$id))
 
 
-# This next line of code first identifies which clinic numbers are duplicated: "duplicated(dat1$clinic)"
-# Then, it selects those clinic numbers from "dat1$clinic" and returns only one instance of each duplicated clinic number using "unique()".
+# This next line of code first identifies which ids are duplicated: "duplicated(dat1$id)"
+# Then, it selects those ids from "dat1$id" and returns only one instance of each duplicated ids using "unique()".
 
-tmp <- unique(dat1$clinic[duplicated(dat1$clinic)])
+tmp <- unique(dat1$id[duplicated(dat1$id)])
 
 # which rows have a duplicate?
-dup.rows <- which(dat1$clinic %in% tmp)
+dup.rows <- which(dat1$id %in% tmp)
 
-# show a portion of the data with the duplicates
-kable(dat1[dup.rows, c('clinic','case','age','arm','sex')])
+# show a portion of the data with the duplicates - which version do you keep?
+kable(dat1[dup.rows, c('id','age','arm','sex','bmi')])
 ```
 
 
@@ -218,8 +218,8 @@ This same code can be run using the following `dplyr` commands.  It also illustr
 
 ```{r}
 # Using dplyr code this would be
-dat1 %>% filter(clinic %in% tmp) %>%
-         select(clinic, case, age, arm, sex) %>%
+dat1 %>% filter(id %in% tmp) %>%
+         select(id, age, arm, sex, bmi) %>%
         kable()
 ```
 
@@ -539,8 +539,8 @@ print(tmp)
 # More detailed summary of differences
 summary(tmp)
 
-# now compare after matching by clinic number
-tmp2 <- comparedf(x=sas_dat1, y=excel_dat1, by='clinic')
+# now compare after matching by id
+tmp2 <- comparedf(x=sas_dat1, y=excel_dat1, by='id')
 tmp2
 
 summary(tmp2)
@@ -553,7 +553,7 @@ One of the big differences appears to be that the Excel data has periods in the 
 # names(excel_dat1) <- make.names(names(excel_dat1), allow_=FALSE)
 
 ## or we could let compare() do it.
-summary(comparedf(x=sas_dat1, y=excel_dat1, by = "clinic", tol.vars = "."))
+summary(comparedf(x=sas_dat1, y=excel_dat1, by = "id", tol.vars = "."))
 ```
 
 
@@ -585,7 +585,7 @@ sessionInfo()
 * [summary tools](https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html)
      + [summarytools with rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)
 * [arsenal](https://cran.r-project.org/web/packages/arsenal/index.html)
-* [dart](http://hsrinf.mayo.edu/activity/s200555/dart/00Index.html)
+
 
 
 ## Optional ways to code 
@@ -643,10 +643,10 @@ labeldata <- merge(tmp1, tmp2, all=T, by='vars')
 
 # 1) identify which variables you want to relabel and which column they are in 
 #    Look at what is returned from the match function.
-ok <- match(c('clinic','case','age','sex','bmi','birthdt','resintdt'), labeldata$vars)
+ok <- match(c('id','age','sex','bmi','birthdt','resintdt'), labeldata$vars)
 
 # 2) for those locations, add in new labels
-labeldata$labels[ok] <- c("MCN", "Case", "Age", "Sex", "BMI", "Birthdate", "ResInt Date")
+labeldata$labels[ok] <- c("ID",  "Age", "Sex", "BMI", "Birthdate", "ResInt Date")
 
 # These next two lines create a list called vlabels and sets things up so that
 # the variable labels can be accessed by their variable names.
@@ -699,19 +699,19 @@ tail(dat1b)
 
 * Take a closer look at the data using basic summary statistics. Do you notice any strange values?  If so, fix them.
 
-We can change the variable types using the dplyr package and mutate_at(). We will not include clinic and case in the tables since they are unique identifiers.  The code shown below makes all of these variables factors instead of numeric variables.
+We can change the variable types using the dplyr package and mutate_at(). We will not include id in the tables since they are unique identifiers.  The code shown below makes all of these variables factors instead of numeric variables.
 
 ```{r results = 'asis'}
 library(dplyr)
-cols <- vars("clinic", "case", "fustat", "ps", "mdqualitys")
+cols <- vars("id",  "fustat", "ps", "mdqualitys")
 new_dat <- dat1 %>% mutate_at(cols, funs(factor(.)))
 ```
 
-Here is another use of tableby to explore the data, removing the variables clinic and case on-the-fly using the `select()` function.
+Here is another use of tableby to explore the data, removing the variable id  on-the-fly using the `select()` function.
 
 ```{r, results='asis'}
 summary(tableby(~ ., 
-                data=subset(dat1, select = c(-clinic, -case))), 
+                data=subset(dat1, select = -id)), 
         title = "Baseline and patient characteristics")
 ```
 
@@ -798,7 +798,7 @@ Here is a fancy table showing which line in the data is completely duplicated, h
 
 ```{r results = 'asis'}
 kable(dat1[duplicated(dat1),] %>% 
-           select("clinic", "case", "age", "arm", "sex"), 
+           select("id",  "age", "arm", "sex", "bmi"), 
       caption = "Duplicate Records")
 ```
 
@@ -825,9 +825,9 @@ label(new_dat$bmi) <- "Body Mass Index"
 ```{r results='asis'}
 # Default report
 # I'm going to use the same formula many times, so let's define it once
-# LHS=Arm, RHS=all other variables except clinic and case 
+# LHS=Arm, RHS=all other variables except id 
 # exclude RHS identifies variables to leave out from right hand side (as indices)
-excludeRHS <- which(names(dat1) %in% c("clinic", "case", "arm"))
+excludeRHS <- which(names(dat1) %in% c("id", "arm"))
 tableformula <- formulize(y="arm", x=names(dat1[,-excludeRHS]))
 t1 <- tableby(tableformula, data=dat1, total=FALSE)
 summary(t1)
