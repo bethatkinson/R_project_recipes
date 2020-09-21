@@ -1,0 +1,203 @@
+---
+title: "This is an example of a real program"
+author: "My name"
+date: "`r format(Sys.time(),'%d %B, %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE, echo=FALSE}
+# I always include a "setup" code chunk where I attach the packages I'm going to use
+# I sometimes then delete those that I don't really need, but it is helpful to have a basic
+# set that I always start with. In RStudio you can create a short-cut to include these.
+
+# make pretty output
+library(knitr)
+library(rmarkdown)
+
+# read and manipulate data
+library(dart) # Access DART data
+library(haven) # use for SAS
+library(readxl) # use for Excel
+library(lubridate) # tools for dates
+
+library(tidyverse) # includes main tidyverse packages: ggplot2, dplyr, tidyr, readr,
+                   #                                   purrr, tibble, stringr, forcats
+
+# analysis tools
+library(arsenal)
+library(broom) # nice output of models
+library(summarytools) # nice quick summary of dataset
+
+# Generally I turn echo=FALSE
+opts_chunk$set(comment = NA, echo=TRUE, message=FALSE, warning=FALSE, collapse=TRUE)
+
+# Before doing any work, you are strongly encouraged to set this option in your program
+options(stringsAsFactors=FALSE)
+
+# We've found it helpful to define paths to directories, sort of like a 
+# libname statement in SAS because we typically store data in different 
+# (non-project) locations.  Others may want to use relative paths
+
+inpath <- '/unix/directory/path/to/our/data/'
+outpath <- '~/ibm/'
+```
+
+```{r read-data, results='hide'}
+# read data using read_sas function found in the haven package
+s1 <- read_sas(paste0(inpath,'dat1.sas7bdat'))
+
+# add in labels
+label(s1$birthdt) <- "Birth Date"
+label(s1$bmi) <- "BMI"
+label(s1$age) <- "Age, yrs"
+
+# save all the labels
+s1.orig.labels <- sapply(X=s1,FUN=function(x) {attr(x,'label')})
+
+# Use the readxl package
+e1 <- read_excel(paste0(inpath,'dat1.xls'))
+```
+
+# Project Overview
+
+The purpose of this document is to do some initial data exploration and clean-up.
+
+```{r}
+# look at the data interactively using View()
+#View(s1)
+
+# create a quick summary of the variable classes (numeric, character, Date)
+sapply(s1, class)
+
+# summary of variables, variable classes, first few obs
+str(s1)
+```
+
+Take a look at the full dataset using the summarytools package.
+
+```{r dfsummary, results='asis'}
+# Settings to work well in markdown document (try running default settings interactively)
+dfSummary(s1, plain.ascii=FALSE, style='grid', graph.col=FALSE, omit.headings=TRUE)
+
+# Save the results to an external file (includes plots!)
+print(dfSummary(s1), file='~/ibm/dat1.html')
+
+cat('\nMissing rates for each variable:\n')
+round(100*colMeans(is.na(s1)),2)
+
+cat('\nMissing rates for each subject:\n')
+tmp <- round(100*rowMeans(is.na(s1)), 2)
+summary(tmp)
+
+cat('\nNumber of subjects missing at least 25% of the variables:\n')
+100*mean(tmp>=25)
+
+cat('\nCheck for duplicates\n')
+table(table(s1$clinic))
+
+# identify which clinic number was a duplicate
+dup.cn <- s1$clinic[duplicated(s1$clinic)]
+
+# remove rows with identical duplicate values (this doesn't work if 1 variable is different)
+tmp <- distinct(s1, .keep_all=T)
+table(table(tmp$clinic))
+```
+
+```{r clean-data}
+s1$sex[s1$sex %in% c('2','F')] <- 'Female'
+
+# The variable ps has 3 levels (0, 1, 2) which is the ECOG performance score
+s1$ps <- ordered(s1$ps, levels=0:2, labels=0:2)
+# The age groups should be treated as ordered
+s1$ageord <- ordered(s1$ageord)
+
+s1 <- s1 %>% rename(mdquality.s=mdqualitys) %>% mutate(mdquality.s = factor(mdquality.s))
+
+s2 <- distinct(s1, .keep_all=T)
+```
+
+## Summaries stratified by treatment arm
+
+```{r non-parametric, results='asis'}
+mystats <- tableby.control(numeric.stats=c('Nmiss','medianq1q3'), numeric.test='kwt')
+tab2 <- tableby(arm ~ age + gender + ps + hgb + bmi + alkphos + ast + 
+                mdqualitys + ageord + birthdt,
+                data=s2, control=mystats)
+## alternatively
+myform <- formulize('arm', names(s2)[c(3,5,8:16)])
+tab2 <- tableby(myform, data=s2, control=mystats)
+summary(tab2, pfootnote=TRUE)
+```
+
+There are `r sum(s2$sex=='Male')` men and `r sum(s2$sex=='Female')` women in this dataset.
+
+
+* How many people have the combinations of ps, sex, and treatment arm?
+
+```{r, results='asis'}
+ex3 <- with(s2, table(ps, sex, arm))
+summary(freqlist(ex3))
+```
+
+## Plotting
+
+```{r}
+# boxplot example
+ggplot(s2, aes(x=sex, y=age)) + geom_boxplot() + xlab(" ") + ylab('Age at baseline') +
+  ggtitle("Age distribution stratified by gender")
+```
+
+```{r}
+# Regression line on scatterplots colored by treatment arm - separately by sex
+ggplot(s2, aes(age, bmi, color=arm)) + geom_point()  + facet_wrap(~sex) + geom_smooth(method='lm')
+
+# Smoothers - remove the confidence bands
+ggplot(s2, aes(age, bmi, color=arm)) + geom_point()  + facet_wrap(~sex) + geom_smooth(se=FALSE)
+
+# repeat plot, but change theme to black/white
+ggplot(s2, aes(age, bmi, color=arm)) + geom_point()  + facet_wrap(~sex) + geom_smooth(se=FALSE) + theme_bw()
+```
+
+### Basic Modeling
+
+Run a simple linear regression model predicting bmi with a covariate.
+
+```{r basic-model}
+fit <- lm(bmi ~ sex, data=s2)
+
+# Look at a standard model summary
+summary(fit1)
+
+# Look at a tidy model summary (data frame)
+tmp <- tidy(fit1)
+class(tmp)
+print(tmp, digits=3)
+glance(fit1)
+```
+
+## Data Import, revisited
+
+* Compare the SAS data with the Excel data
+
+```{r excel}
+# Compare s1 and e1
+tmp <- compare(s1, e1)
+
+# Brief overview of differences
+print(tmp)
+
+# More detailed summary of differences
+summary(tmp)
+
+# now match by clinic number
+tmp2 <- compare(x=s1, y=e1, by='clinic')
+tmp2
+
+summary(tmp2)
+
+# Does the excel file have any variable labels?
+e1.labels <- sapply(e1, FUN=function(x) {attr(x,'label')})
+head(e1.labels)
+```
+
+

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Preface | R Recipes for Common Medical Projects</title>
+  <meta name="description" content="Preface | R Recipes for Common Medical Projects" />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Preface | R Recipes for Common Medical Projects" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Preface | R Recipes for Common Medical Projects" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="scenario-1-getting-familiar-with-a-new-project.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./index.html">R Recipes for Common Medical Projects</a></li>
+<li><a href="./_main.pdf">PDF version of book</a></li>
+<li><a href="./data.zip">Download data</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="0.1" data-path="preface.html"><a href="preface.html#getting-started"><i class="fa fa-check"></i><b>0.1</b> Getting Started</a></li>
+<li class="chapter" data-level="0.2" data-path="preface.html"><a href="preface.html#r-markdown"><i class="fa fa-check"></i><b>0.2</b> R markdown</a></li>
+<li class="chapter" data-level="0.3" data-path="preface.html"><a href="preface.html#the-data"><i class="fa fa-check"></i><b>0.3</b> The Data</a></li>
+<li class="chapter" data-level="0.4" data-path="preface.html"><a href="preface.html#scenarios"><i class="fa fa-check"></i><b>0.4</b> Scenarios</a></li>
+<li class="chapter" data-level="0.5" data-path="preface.html"><a href="preface.html#finding-help"><i class="fa fa-check"></i><b>0.5</b> Finding help</a></li>
+<li class="chapter" data-level="0.6" data-path="preface.html"><a href="preface.html#disclosure"><i class="fa fa-check"></i><b>0.6</b> Disclosure</a></li>
+<li class="chapter" data-level="0.7" data-path="preface.html"><a href="preface.html#contributors"><i class="fa fa-check"></i><b>0.7</b> Contributors</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html"><i class="fa fa-check"></i><b>1</b> Scenario 1: Getting Familiar with a New Project</a><ul>
+<li class="chapter" data-level="1.1" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#your-mission"><i class="fa fa-check"></i><b>1.1</b> Your Mission</a></li>
+<li class="chapter" data-level="1.2" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#implementation"><i class="fa fa-check"></i><b>1.2</b> Implementation</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#import-data"><i class="fa fa-check"></i><b>1.2.1</b> Import Data</a></li>
+<li class="chapter" data-level="1.2.2" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#data-exploring"><i class="fa fa-check"></i><b>1.2.2</b> Data Exploring</a></li>
+<li class="chapter" data-level="1.2.3" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#data-frame-summary"><i class="fa fa-check"></i><b>1.2.3</b> Data Frame Summary</a></li>
+<li class="chapter" data-level="1.2.4" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#plotting"><i class="fa fa-check"></i><b>1.2.4</b> Plotting</a></li>
+<li class="chapter" data-level="1.2.5" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#basic-modeling"><i class="fa fa-check"></i><b>1.2.5</b> Basic Modeling</a></li>
+<li class="chapter" data-level="1.2.6" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#data-import-revisited"><i class="fa fa-check"></i><b>1.2.6</b> Data Import, revisited</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#resources"><i class="fa fa-check"></i><b>1.3</b> Resources</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#technical-details"><i class="fa fa-check"></i><b>1.3.1</b> Technical details</a></li>
+<li class="chapter" data-level="1.3.2" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#example-of-a-real-program"><i class="fa fa-check"></i><b>1.3.2</b> Example of a real program</a></li>
+<li class="chapter" data-level="1.3.3" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#packages-used"><i class="fa fa-check"></i><b>1.3.3</b> Packages used</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#optional-ways-to-code"><i class="fa fa-check"></i><b>1.4</b> Optional ways to code</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#alt-import"><i class="fa fa-check"></i><b>1.4.1</b> Data Import</a></li>
+<li class="chapter" data-level="1.4.2" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#alt-explore"><i class="fa fa-check"></i><b>1.4.2</b> Data Exploring</a></li>
+<li class="chapter" data-level="1.4.3" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#alt-plot"><i class="fa fa-check"></i><b>1.4.3</b> Plotting</a></li>
+<li class="chapter" data-level="1.4.4" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#alt-model"><i class="fa fa-check"></i><b>1.4.4</b> Basic Modeling</a></li>
+<li class="chapter" data-level="1.4.5" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#alt-revisited"><i class="fa fa-check"></i><b>1.4.5</b> Data Import, revisited</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><b>2</b> Appendix</a><ul>
+<li class="chapter" data-level="2.1" data-path="appendix.html"><a href="appendix.html#appendix-1-tidyverse-package-overviews"><i class="fa fa-check"></i><b>2.1</b> Appendix 1: tidyverse package overviews</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="appendix.html"><a href="appendix.html#dplyr"><i class="fa fa-check"></i><b>2.1.1</b> dplyr</a></li>
+<li class="chapter" data-level="2.1.2" data-path="appendix.html"><a href="appendix.html#tidyr"><i class="fa fa-check"></i><b>2.1.2</b> tidyr</a></li>
+<li class="chapter" data-level="2.1.3" data-path="appendix.html"><a href="appendix.html#lubridate"><i class="fa fa-check"></i><b>2.1.3</b> lubridate</a></li>
+<li class="chapter" data-level="2.1.4" data-path="appendix.html"><a href="appendix.html#ggplot2"><i class="fa fa-check"></i><b>2.1.4</b> ggplot2</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="appendix.html"><a href="appendix.html#appendix-2-r-for-sas-programmers"><i class="fa fa-check"></i><b>2.2</b> Appendix 2: R for SAS programmers</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="_blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Recipes for Common Medical Projects</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="preface" class="section level1 unnumbered">
+<h1>Preface</h1>
+<p>This book contains R recipes for typical analyses done for medical research projects. The objectives of this book:</p>
+<ul>
+<li>Create Mock projects and analyze the data using R</li>
+<li>Give people code snippets that they can use for their own projects</li>
+<li>Show how the various packages and functions fit together</li>
+<li>Recommend key packages for summarizing data</li>
+<li>Provide links for further study</li>
+<li>Model best practices for coding</li>
+<li>Encourage the use of RStudio and R markdown</li>
+</ul>
+<p>The assumption is that users will have some basic knowledge of R. Instead of re-creating introductory information or extended lists of options, we have chosen to provide one way of doing the analysis (with a perhaps a few more at the end of each scenario). Links are provided to other resources for more education.</p>
+<div id="getting-started" class="section level2">
+<h2><span class="header-section-number">0.1</span> Getting Started</h2>
+<ul>
+<li><p>Although not required, we strongly encourage that users work through these examples using RStudio. RStudio is an integrated environment that includes an editor to write code, a console to execute code, a workspace to view objects in your session, a help window, and much more. Information on using RStudio can be found at <a href="https://moderndive.netlify.com/1-getting-started.html">https://moderndive.netlify.com/1-getting-started.html</a>.</p></li>
+<li><p>Most of the functions used in this book are from base R or tidyverse packages (other packages will be described, when used, throughout this book). Direct links to packages used for each scenario are included at the end of the scenarios.</p>
+<ul>
+<li>Tidyverse is a collection of packages designed to work together to solve data science problems. The figure below includes the stages of an analysis and the tidyverse packages developed for each stage.</li>
+</ul></li>
+</ul>
+<p><img src="images/Tidyverse.png" width="80%" style="display: block; margin: auto;" /></p>
+<p>Core tidyverse packages can be loaded into your R session with <code>library(tidyverse)</code>. The function <code>tidyverse_packages()</code> details what packages are in the <code>tidyverse</code> while the <code>search()</code> command shows what packages have been loaded. There are additional packages that are considered a part of the tidyverse that are not automatically loaded. Highlights of some of the key tidyverse packages are shown in the appendix.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="preface.html#cb1-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(tidyverse)  <span class="co"># load basic tidyverse packages</span></span>
+<span id="cb1-2"><a href="preface.html#cb1-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">search</span>()  <span class="co"># see what was loaded</span></span>
+<span id="cb1-3"><a href="preface.html#cb1-3"></a> [<span class="dv">1</span>] <span class="st">&quot;.GlobalEnv&quot;</span>        <span class="st">&quot;package:forcats&quot;</span>   <span class="st">&quot;package:stringr&quot;</span>  </span>
+<span id="cb1-4"><a href="preface.html#cb1-4"></a> [<span class="dv">4</span>] <span class="st">&quot;package:dplyr&quot;</span>     <span class="st">&quot;package:purrr&quot;</span>     <span class="st">&quot;package:readr&quot;</span>    </span>
+<span id="cb1-5"><a href="preface.html#cb1-5"></a> [<span class="dv">7</span>] <span class="st">&quot;package:tidyr&quot;</span>     <span class="st">&quot;package:tibble&quot;</span>    <span class="st">&quot;package:ggplot2&quot;</span>  </span>
+<span id="cb1-6"><a href="preface.html#cb1-6"></a>[<span class="dv">10</span>] <span class="st">&quot;package:tidyverse&quot;</span> <span class="st">&quot;package:stats&quot;</span>     <span class="st">&quot;package:graphics&quot;</span> </span>
+<span id="cb1-7"><a href="preface.html#cb1-7"></a>[<span class="dv">13</span>] <span class="st">&quot;package:grDevices&quot;</span> <span class="st">&quot;package:utils&quot;</span>     <span class="st">&quot;package:datasets&quot;</span> </span>
+<span id="cb1-8"><a href="preface.html#cb1-8"></a>[<span class="dv">16</span>] <span class="st">&quot;package:methods&quot;</span>   <span class="st">&quot;Autoloads&quot;</span>         <span class="st">&quot;package:base&quot;</span>     </span>
+<span id="cb1-9"><a href="preface.html#cb1-9"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb1-10"><a href="preface.html#cb1-10"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">tidyverse_packages</span>(<span class="dt">include_self =</span> <span class="ot">TRUE</span>)  <span class="co"># list all packages in tidyverse</span></span>
+<span id="cb1-11"><a href="preface.html#cb1-11"></a> [<span class="dv">1</span>] <span class="st">&quot;broom&quot;</span>      <span class="st">&quot;cli&quot;</span>        <span class="st">&quot;crayon&quot;</span>     <span class="st">&quot;dbplyr&quot;</span>     <span class="st">&quot;dplyr&quot;</span>     </span>
+<span id="cb1-12"><a href="preface.html#cb1-12"></a> [<span class="dv">6</span>] <span class="st">&quot;forcats&quot;</span>    <span class="st">&quot;ggplot2&quot;</span>    <span class="st">&quot;haven&quot;</span>      <span class="st">&quot;hms&quot;</span>        <span class="st">&quot;httr&quot;</span>      </span>
+<span id="cb1-13"><a href="preface.html#cb1-13"></a>[<span class="dv">11</span>] <span class="st">&quot;jsonlite&quot;</span>   <span class="st">&quot;lubridate&quot;</span>  <span class="st">&quot;magrittr&quot;</span>   <span class="st">&quot;modelr&quot;</span>     <span class="st">&quot;pillar&quot;</span>    </span>
+<span id="cb1-14"><a href="preface.html#cb1-14"></a>[<span class="dv">16</span>] <span class="st">&quot;purrr&quot;</span>      <span class="st">&quot;readr&quot;</span>      <span class="st">&quot;readxl&quot;</span>     <span class="st">&quot;reprex&quot;</span>     <span class="st">&quot;rlang&quot;</span>     </span>
+<span id="cb1-15"><a href="preface.html#cb1-15"></a>[<span class="dv">21</span>] <span class="st">&quot;rstudioapi&quot;</span> <span class="st">&quot;rvest&quot;</span>      <span class="st">&quot;stringr&quot;</span>    <span class="st">&quot;tibble&quot;</span>     <span class="st">&quot;tidyr&quot;</span>     </span>
+<span id="cb1-16"><a href="preface.html#cb1-16"></a>[<span class="dv">26</span>] <span class="st">&quot;xml2&quot;</span>       <span class="st">&quot;tidyverse&quot;</span> </span></code></pre></div>
+</div>
+<div id="r-markdown" class="section level2">
+<h2><span class="header-section-number">0.2</span> R markdown</h2>
+<p>R markdown (file extention <code>.Rmd</code>) is a simple way to integrate R output and text, then output as HTML, PDF, or Word. The syntax is pretty basic (e.g., a bulleted list is simply an astrix <code>*</code> followed by text). R markdown is much easier to compile and explore using RStudio, thought it can be run using R from a terminal window. There is a lot of documentation available on getting started with R Markdown including:</p>
+<ul>
+<li><a href="https://www.rstudio.com/resources/cheatsheets/">RStudio cheatsheets</a></li>
+<li><a href="https://www.rstudio.com/resources/webinars/">RStudio webinar archives</a></li>
+</ul>
+</div>
+<div id="the-data" class="section level2">
+<h2><span class="header-section-number">0.3</span> The Data</h2>
+<p>There are separate datasets used for each scenario. They are based on real data but certain variables are simulated or perturbed. Patient ID numbers have all been fabricated.</p>
+<p>You can try the exercises out by first <a href="">downloading the data</a> to your home directory or read in the data from the Github page using the provided code. The exercises assume that you have the files in a subdirectory called “data” that is in the same directory as your programs.</p>
+</div>
+<div id="scenarios" class="section level2">
+<h2><span class="header-section-number">0.4</span> Scenarios</h2>
+<p>Scenario 1: Getting Familiar with a New Project</p>
+<ul>
+<li>In this scenario, you are starting a new project and want to get familiar with the data. It covers:
+<ul>
+<li>Import Data</li>
+<li>Explore Data
++ Identify and deal with strange values and duplicate observations
++ Generate summary statistics</li>
+<li>Plot Data</li>
+<li>Fit a simple model</li>
+</ul></li>
+</ul>
+<p>Scenario 2: Modeling and Plotting with Cleaned Data</p>
+<ul>
+<li>In this scenario, you already cleaned your data but want to do more complex models and plots.
+<ul>
+<li>Deal with missing data</li>
+<li>Plot Kaplan Meier &amp; cumulative incidence curves</li>
+<li>Run linear, logistic &amp; Cox models</li>
+</ul></li>
+</ul>
+<p>Scenario 3: Working with Multiple Observations per Subject</p>
+<ul>
+<li>In this scenario you will work with multiple observations per subject as is often found in longitudinal data.
+<ul>
+<li>Explore and clean baseline data</li>
+<li>Using a cleaned version of the full dataset (up to 4 visits per subject), transform the data from 1 obs/subject to 1 obs/subject/visit.</li>
+<li>Plot the data with separate lines for each subject</li>
+<li>Fit linear models and linear mixed effects models</li>
+</ul></li>
+</ul>
+</div>
+<div id="finding-help" class="section level2">
+<h2><span class="header-section-number">0.5</span> Finding help</h2>
+<p>There are several ways to find additional help.</p>
+<ul>
+<li>Using the help function. These are to remind the user of the argument names, but are not extensive.</li>
+</ul>
+<pre><code>help(foo)       # brief help/syntax about function foo
+?foo            # same thing
+example(foo)    # show an example of function foo
+apropos(&quot;foo&quot;)  # list all functions containing the string &quot;foo&quot;</code></pre>
+<ul>
+<li>Vignettes. These generally provide more detailed examples if they are available.</li>
+</ul>
+<pre><code>vignette()         # show available vignettes in loaded packages
+vignette(&quot;foo&quot;)    # show specific vignette</code></pre>
+<p>Or search the web for “R vignette foo”</p>
+<ul>
+<li>Try one these sites
+<ul>
+<li><a href="https://www.statmethods.net/index.html">Quick-R</a></li>
+<li><a href="https://stackoverflow.com/">stack overflow</a></li>
+<li><a href="http://www.sthda.com/english/">Statistical tools for high-throughput data analysis (STHDA)</a></li>
+<li><a href="https://www.rstudio.com/resources/cheatsheets/">Use package cheat sheets</a></li>
+<li><a href="https://www.rstudio.com/online-learning/">RStudio Online Learning</a></li>
+</ul></li>
+<li>Google tips
+<ul>
+<li>Use key “R” words like ggplot: <a href="https://www.google.com/search?q=ggplot+add+horizontal+line">ggplot add horizontal line</a></li>
+<li>Check the date of the posting, especially for code relating to the tidyverse. It is still relatively new and the coding has changed over time.</li>
+</ul></li>
+</ul>
+</div>
+<div id="disclosure" class="section level2">
+<h2><span class="header-section-number">0.6</span> Disclosure</h2>
+<p>The solutions presented here are one way to do things (usually the “easy” way), and there was a lot of discussion about which was the “easy” way. Alternative solutions are presented in the appendix.</p>
+</div>
+<div id="contributors" class="section level2">
+<h2><span class="header-section-number">0.7</span> Contributors</h2>
+<p>This series of examples was created by Beth Atkinson, Brendan Broderick, Erin Carlson, Krista Goergen, Mike Golafshar, Ethan Heinzen, Katie Kunze, Liz Lesser, Peter Martin, Ryan Lennon.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="scenario-1-getting-familiar-with-a-new-project.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"toc": {
+"collapse": "none",
+"toc_depth": 4
+}
+});
+});
+</script>
+
+</body>
+
+</html>

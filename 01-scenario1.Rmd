@@ -45,7 +45,7 @@ Now re-do it with the covariate coded as a factor. Did the answer change?
 When reading in SAS data you can use the `read_sas()` function that is found in the `haven` package.  To make a package available simply use the `library()` function with the non-quoted name of the package.  The `read_sas()` function works for the majority of SAS datasets.  Other options are found at the [end of this document](#alt-import) in the rare situations where you need to use a different tool.
 
 ```{r message=FALSE}
-# Before doing any work, you are strongly encouraged to set this option in each of your programs
+# Before doing any work, you are strongly encouraged to set this option in each of your programs (default for later versions of R)
 options(stringsAsFactors=FALSE)
 
 # various functions from the tidyverse package are used.
@@ -53,6 +53,8 @@ options(stringsAsFactors=FALSE)
 library(tidyverse)
 # use the read_sas function found in the haven package 
 library(haven)
+# the knitr package includes the kable function for simple nice tables
+library(knitr)
 
 # link to data on GitHub page if not already downloaded
 if(!file.exists("data/dat1.sas7bdat")) {
@@ -103,7 +105,7 @@ View(dat1)
 
 ![](images/View_data.png)
 
-Here is some simple code that prints out the variable names and their classes using the functions `sapply()` and `class()`.  [sapply](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/lapply) is a function that looks at each element within a list (here, each variable) and runs the specified function (here, `class()`).  Results are returned as a vector.  Then, the `knitr` package includes the `kable` function which makes pretty default tables, especially for reports. 
+Here is some simple code that prints out the variable names and their classes using the functions `sapply()` and `class()`.  [sapply](https://www.rdocumentation.org/packages/base/versions/current/topics/lapply) is a function that looks at each element within a list (here, each variable) and runs the specified function (here, `class()`).  Results are returned as a vector.  Then, the `knitr` package includes the `kable` function which makes pretty default tables, especially for reports. 
 In the output below, the `class()` function is returning the class of each variable. Typical R classes for variables in a dataset include: character, numeric, integer, Date, logical, factor. More information on classes and data types can be found in Hadley Wickham's book [Advanced R](https://adv-r.hadley.nz/base-types.html).
 
 ```{r}
@@ -162,7 +164,7 @@ dat1$sex[dat1$sex %in% c('2','F')] <- 'Female'
 table(dat1$sex)
 ```
 
-One of tricky functions in R for SAS programmers is `ifelse()` function which differs from `if() {} else {}`. Suppose that you believe that all observations over a certain cutoff are errors and you want to set them equal to missing.  The code below uses `ifelse`.  The first argument creates a logical True/False variable.  For those observations where the "test" is TRUE, use the value in the "yes" field and for those observations where the "test" is FALSE, use the value in the "no" field.
+One of the tricky functions in R for SAS programmers is the `ifelse()` function which differs from `if() {} else {}`. Suppose that you believe that all observations over a certain cutoff are errors and you want to set them equal to missing.  The code below uses `ifelse`.  The first argument creates a logical True/False variable.  For those observations where the "test" is TRUE, use the value in the "yes" field and for those observations where the "test" is FALSE, use the value in the "no" field.
 
 ```{r}
 ast <- dat1$ast
@@ -210,11 +212,12 @@ tmp <- unique(dat1$id[duplicated(dat1$id)])
 dup.rows <- which(dat1$id %in% tmp)
 
 # show a portion of the data with the duplicates - which version do you keep?
+# the kable function is available in the knitr package
 kable(dat1[dup.rows, c('id','age','arm','sex','bmi')])
 ```
 
 
-This same code can be run using the following `dplyr` commands.  It also illustrates the use of "piping", which is what the `%>%` is called. Basically, it allows you to string a bunch of commands together without having to save out temporary datasets.  The `filter` command keeps only those observations where the condition is true.  The `select` function keeps only certain variables.
+This same code can be run using the following `dplyr` commands.  It also illustrates the use of "piping", which is what the 3 character string `%>%` is called. Basically, it allows you to combine a bunch of commands together without having to save out temporary datasets.  The `filter` command keeps only those observations where the condition is true.  The `select` function keeps only certain variables.
 
 ```{r}
 # Using dplyr code this would be
@@ -246,7 +249,7 @@ Again, this is an instance where `tableby` produces a nice table. Here the varia
 ```{r tableby, results='asis'}
 tab1 <- tableby(arm ~ age + sex + ps + bmi + alkphos + mdqualitys + ageord + birthdt,
                 data=dat2)
-summary(tab1, pfootnote=TRUE)
+summary(tab1, pfootnote=TRUE, total=FALSE)
 ```
 
 * **Do the summary statistics make sense for each variable?  If not, modify them so that the default summaries fit the data.**
@@ -284,13 +287,16 @@ You can assign columns metadata, like a label, that describes them using attribu
 
 
 ```{r change-label, results='asis'}
-label(dat2$bmi)
-label(dat2$bmi) <- 'Body Mass Index'
+# The labels() function in arsenal shows all labels of a data frame 
+labels(dat2)$bmi
+labels(dat2)$bmi <- 'Body Mass Index'
 
 # Modify the actual attribute for the variable
 attr(dat2$age,'label')
 attr(dat2$age,'label') <- 'Age at baseline'
 ```
+
+More information about labels can be found in the [arsenal vignette](https://cran.r-project.org/web/packages/arsenal/vignettes/labels.html) on that topic.
 
 * **Now change the summary statistics to be non-parametric in the table.**
 
@@ -303,8 +309,7 @@ Using the function `tableby.control()` you can define which summary statistics a
 mycontrol <- tableby.control(numeric.stats = c("Nmiss", "medianq1q3"), digits=1,
                              chisq.correct = FALSE)
  
-tab2 <- tableby(arm ~ age + sex + ps + bmi + alkphos + mdqualitys + ageord + birthdt +
-                Surv(futime,fustat), data=dat2, control=mycontrol)
+tab2 <- tableby(arm ~ age + sex + ps + bmi + alkphos + mdqualitys + ageord + birthdt, data=dat2, control=mycontrol)
 summary(tab2, pfootnote=TRUE)
 ```
 
@@ -320,8 +325,7 @@ summary(tab2, labelTranslations = vlabels, pfootnote)
 * **Run the table separately for males only (subsetting on the fly instead of creating separate datasets).  In your report, add some text describing how many males and how many females you have.**
 
 ```{r subset, results='asis'}
-tab2_males <- tableby(arm ~ age + ps + bmi + alkphos + mdqualitys + ageord + birthdt +
-                      Surv(futime,fustat), data=dat2, control=mycontrol, subset=sex=='Male')
+tab2_males <- tableby(arm ~ age + ps + bmi + alkphos + mdqualitys + ageord + birthdt, data=dat2, control=mycontrol, subset=sex=='Male')
 summary(tab2_males, pfootnote=TRUE, title='Males only')
 
 # either calculate these ahead of time or on-the-fly
@@ -458,10 +462,10 @@ ggplot(dat2, aes(age, bmi, color=arm)) + geom_point()  + facet_grid(~sex) +
   geom_smooth(se=FALSE)
 ```
 
-There are many formating options for `ggplot` including `theme_bw` and the package [ggthemes[(https://rdrr.io/cran/ggthemes/)] which includes extra themes, geoms, and scales for ggplot2. Below, see how the plot has changed by just indicating the plotting theme.
+There are many formating options for `ggplot` including `theme_bw` and the package [ggthemes[(https://rdrr.io/cran/ggthemes/)] which includes extra themes, geoms, and scales for ggplot2. Below, see how the plot has changed by just indicating the plotting theme.  Another addition is the `alpha` term which lightens the points (default=1). 
 
 ```{r}
-ggplot(dat2, aes(age, bmi, color=arm)) + geom_point()  + facet_grid(~sex) + 
+ggplot(dat2, aes(age, bmi, color=arm)) + geom_point(alpha=.2)  + facet_grid(~sex) + 
   geom_smooth(se=FALSE) + theme_bw()
 ```
 
@@ -552,7 +556,7 @@ One of the big differences appears to be that the Excel data has periods in the 
 ## We could do it ourselves
 # names(excel_dat1) <- make.names(names(excel_dat1), allow_=FALSE)
 
-## or we could let compare() do it.
+## or we could let comparedf() do it.
 summary(comparedf(x=sas_dat1, y=excel_dat1, by = "id", tol.vars = "."))
 ```
 
@@ -609,7 +613,7 @@ dat1 <- haven::read_sas(paste0(datadir,"dat1.sas7bdat"))
 
 You can also import SAS data using the `sas.get` function found in the `Hmisc` package.  As is true with `read_sas()` it works for most, but not all, SAS datasets.  One of the downsides of `sas.get()` is that you must be working on a system where SAS is installed, whereas `read_sas()` is based on reverse engineering of the `.sas7bdat` file format and can be used anywhere.
 
-```{r}
+```{r, eval=FALSE, echo=TRUE}
 # Alternative tool for reading in SAS data
 library(Hmisc)
 
@@ -634,7 +638,8 @@ Sometimes it is helpful to have a dataset containing variable names and labels.
 # Grab labels from SAS dataset and create a dataframe of labels
 # These can be used for tableby and plotting
 
-vlabels <- unlist(sapply(dat1, FUN=function(x) attr(x,'label')))
+#vlabels <- unlist(sapply(dat1, FUN=function(x) attr(x,'label')))
+vlabels <- unlist(labels(dat1))
 tmp1 <- data.frame(vars=names(vlabels), labels=vlabels) # data for vars with labels
 tmp2 <- data.frame(vars=names(dat1)) # data for vars with no existing labels
 labeldata <- merge(tmp1, tmp2, all=T, by='vars') 
@@ -704,7 +709,7 @@ We can change the variable types using the dplyr package and mutate_at(). We wil
 ```{r results = 'asis'}
 library(dplyr)
 cols <- vars("id",  "fustat", "ps", "mdqualitys")
-new_dat <- dat1 %>% mutate_at(cols, funs(factor(.)))
+new_dat <- dat1 %>% mutate_at(cols, ~factor(.))
 ```
 
 Here is another use of tableby to explore the data, removing the variable id  on-the-fly using the `select()` function.
@@ -980,8 +985,8 @@ v1 <- gdata::read.xls(xls='data/dat1.xls', sheet=1)
 # readxl
 v2 <- readxl::read_excel(path='data/dat1.xls', sheet=1)
 
-# openxlsx
-# v3 <- openxlsx::read.xlsx(xlsxFile='data/dat1.xls', sheet=1)
+# openxlsx, cannot real .xls - only .xlsx
+# v3 <- openxlsx::read.xlsx(xlsxFile='data/dat1.xls', sheet=1) 
 ```
 
 One of the differences between reading in SAS and Excel is that Excel doesn't have the concept of variable labels.

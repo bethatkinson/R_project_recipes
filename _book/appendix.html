@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Appendix | R Recipes for Common Medical Projects</title>
+  <meta name="description" content="2 Appendix | R Recipes for Common Medical Projects" />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Appendix | R Recipes for Common Medical Projects" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Appendix | R Recipes for Common Medical Projects" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="scenario-1-getting-familiar-with-a-new-project.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./index.html">R Recipes for Common Medical Projects</a></li>
+<li><a href="./_main.pdf">PDF version of book</a></li>
+<li><a href="./data.zip">Download data</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#section"></a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="0.1" data-path="preface.html"><a href="preface.html#getting-started"><i class="fa fa-check"></i><b>0.1</b> Getting Started</a></li>
+<li class="chapter" data-level="0.2" data-path="preface.html"><a href="preface.html#r-markdown"><i class="fa fa-check"></i><b>0.2</b> R markdown</a></li>
+<li class="chapter" data-level="0.3" data-path="preface.html"><a href="preface.html#the-data"><i class="fa fa-check"></i><b>0.3</b> The Data</a></li>
+<li class="chapter" data-level="0.4" data-path="preface.html"><a href="preface.html#scenarios"><i class="fa fa-check"></i><b>0.4</b> Scenarios</a></li>
+<li class="chapter" data-level="0.5" data-path="preface.html"><a href="preface.html#finding-help"><i class="fa fa-check"></i><b>0.5</b> Finding help</a></li>
+<li class="chapter" data-level="0.6" data-path="preface.html"><a href="preface.html#disclosure"><i class="fa fa-check"></i><b>0.6</b> Disclosure</a></li>
+<li class="chapter" data-level="0.7" data-path="preface.html"><a href="preface.html#contributors"><i class="fa fa-check"></i><b>0.7</b> Contributors</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html"><i class="fa fa-check"></i><b>1</b> Scenario 1: Getting Familiar with a New Project</a><ul>
+<li class="chapter" data-level="1.1" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#your-mission"><i class="fa fa-check"></i><b>1.1</b> Your Mission</a></li>
+<li class="chapter" data-level="1.2" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#implementation"><i class="fa fa-check"></i><b>1.2</b> Implementation</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#import-data"><i class="fa fa-check"></i><b>1.2.1</b> Import Data</a></li>
+<li class="chapter" data-level="1.2.2" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#data-exploring"><i class="fa fa-check"></i><b>1.2.2</b> Data Exploring</a></li>
+<li class="chapter" data-level="1.2.3" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#data-frame-summary"><i class="fa fa-check"></i><b>1.2.3</b> Data Frame Summary</a></li>
+<li class="chapter" data-level="1.2.4" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#plotting"><i class="fa fa-check"></i><b>1.2.4</b> Plotting</a></li>
+<li class="chapter" data-level="1.2.5" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#basic-modeling"><i class="fa fa-check"></i><b>1.2.5</b> Basic Modeling</a></li>
+<li class="chapter" data-level="1.2.6" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#data-import-revisited"><i class="fa fa-check"></i><b>1.2.6</b> Data Import, revisited</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#resources"><i class="fa fa-check"></i><b>1.3</b> Resources</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#technical-details"><i class="fa fa-check"></i><b>1.3.1</b> Technical details</a></li>
+<li class="chapter" data-level="1.3.2" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#example-of-a-real-program"><i class="fa fa-check"></i><b>1.3.2</b> Example of a real program</a></li>
+<li class="chapter" data-level="1.3.3" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#packages-used"><i class="fa fa-check"></i><b>1.3.3</b> Packages used</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#optional-ways-to-code"><i class="fa fa-check"></i><b>1.4</b> Optional ways to code</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#alt-import"><i class="fa fa-check"></i><b>1.4.1</b> Data Import</a></li>
+<li class="chapter" data-level="1.4.2" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#alt-explore"><i class="fa fa-check"></i><b>1.4.2</b> Data Exploring</a></li>
+<li class="chapter" data-level="1.4.3" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#alt-plot"><i class="fa fa-check"></i><b>1.4.3</b> Plotting</a></li>
+<li class="chapter" data-level="1.4.4" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#alt-model"><i class="fa fa-check"></i><b>1.4.4</b> Basic Modeling</a></li>
+<li class="chapter" data-level="1.4.5" data-path="scenario-1-getting-familiar-with-a-new-project.html"><a href="scenario-1-getting-familiar-with-a-new-project.html#alt-revisited"><i class="fa fa-check"></i><b>1.4.5</b> Data Import, revisited</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><b>2</b> Appendix</a><ul>
+<li class="chapter" data-level="2.1" data-path="appendix.html"><a href="appendix.html#appendix-1-tidyverse-package-overviews"><i class="fa fa-check"></i><b>2.1</b> Appendix 1: tidyverse package overviews</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="appendix.html"><a href="appendix.html#dplyr"><i class="fa fa-check"></i><b>2.1.1</b> dplyr</a></li>
+<li class="chapter" data-level="2.1.2" data-path="appendix.html"><a href="appendix.html#tidyr"><i class="fa fa-check"></i><b>2.1.2</b> tidyr</a></li>
+<li class="chapter" data-level="2.1.3" data-path="appendix.html"><a href="appendix.html#lubridate"><i class="fa fa-check"></i><b>2.1.3</b> lubridate</a></li>
+<li class="chapter" data-level="2.1.4" data-path="appendix.html"><a href="appendix.html#ggplot2"><i class="fa fa-check"></i><b>2.1.4</b> ggplot2</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="appendix.html"><a href="appendix.html#appendix-2-r-for-sas-programmers"><i class="fa fa-check"></i><b>2.2</b> Appendix 2: R for SAS programmers</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="_blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Recipes for Common Medical Projects</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="appendix" class="section level1">
+<h1><span class="header-section-number">2</span> Appendix</h1>
+<div id="appendix-1-tidyverse-package-overviews" class="section level2">
+<h2><span class="header-section-number">2.1</span> Appendix 1: tidyverse package overviews</h2>
+<div id="dplyr" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> dplyr</h3>
+<p>The package <code>dplyr</code> focuses on transforming and summarizing tabular data with rows and columns. The package contains a set of functions (or “verbs”) that perform common data manipulation operations such as filtering for rows, selecting specific columns, re-ordering rows, adding new columns and summarizing data. In addition, dplyr contains a useful function to perform another common task which is the “split-apply-combine” concept.</p>
+<p>Important dplyr verbs to remember:</p>
+<ul>
+<li><code>select()</code>: select certain columns (fields/variables) of your dataset</li>
+<li><code>filter()</code>: select specific rows (observations) of your dataset</li>
+<li><code>arrange()</code>: sort specified columns in ascending (default) or descending order<br />
+</li>
+<li><code>mutate()</code>: add new columns or change existing ones</li>
+<li><code>summarise()</code>: summarise values</li>
+<li><code>group_by()</code>: allows for group operations in the “split-apply-combine” concept</li>
+<li><code>rename()</code>: change column names for variables</li>
+<li><code>distinct()</code>: get unique values of specified variable set</li>
+</ul>
+<p>Pipe operator: <code>%&gt;%</code></p>
+<ul>
+<li>dplyr imports this operator from another package (magrittr). This operator allows you to pipe the output from one function to the input of another function. Instead of nesting functions (reading from the inside to the outside), the idea of of piping is to read the functions from left to right.</li>
+</ul>
+<p>Further examples are found at this <a href="http://genomicsclass.github.io/book/pages/dplyr_tutorial.html">dplyr tutorial</a>.</p>
+</div>
+<div id="tidyr" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> tidyr</h3>
+<p>The package <code>tidyr</code> focuses on transposing data, changing from a “wide” format to a “long” format.</p>
+<p>Important tidyr verbs to remember:</p>
+<ul>
+<li><code>pivot_longer()</code> takes multiple columns, and gathers them into key-value pairs: it makes “wide” data longer (function used to be called <code>gather</code>)</li>
+<li><code>pivot_wider()</code> takes two columns (key &amp; value) and spreads in to multiple columns, it makes “long” data wider (function used to be called <code>spread</code>)</li>
+<li><code>separate()</code> splits a single column into multiple columns</li>
+<li><code>unite()</code> combines multiple columns into a single column</li>
+</ul>
+<p>Further examples are found at this <a href="https://rpubs.com/bradleyboehmke/data_wrangling">data wrangling site</a>.</p>
+</div>
+<div id="lubridate" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> lubridate</h3>
+<p>Historically dates have been challenging in R. The package <code>lubridate</code> helps with this and includes some basic date manipulation functions.</p>
+<ul>
+<li><code>year(), month(), day()</code>: extract year, month, day</li>
+<li><code>hour(), minute(), second()</code>: extract hour, minute, second from a datetime variable</li>
+<li><code>date()</code>: extract date from datetime variable</li>
+<li><code>mdy()</code>: create date from text string</li>
+</ul>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="appendix.html#cb90-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(lubridate)</span>
+<span id="cb90-2"><a href="appendix.html#cb90-2"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">mdy</span>(<span class="st">&quot;July 4th, 2000&quot;</span>)</span>
+<span id="cb90-3"><a href="appendix.html#cb90-3"></a>[<span class="dv">1</span>] <span class="st">&quot;2000-07-04&quot;</span></span>
+<span id="cb90-4"><a href="appendix.html#cb90-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">mdy</span>(<span class="st">&quot;7/4/2000&quot;</span>)</span>
+<span id="cb90-5"><a href="appendix.html#cb90-5"></a>[<span class="dv">1</span>] <span class="st">&quot;2000-07-04&quot;</span></span></code></pre></div>
+</div>
+<div id="ggplot2" class="section level3">
+<h3><span class="header-section-number">2.1.4</span> ggplot2</h3>
+<p>The package <code>ggplot</code> focuses on displaying data graphically. It is based on the <code>grammer of graphics</code> (Wilkinson, 2005)</p>
+<p>What Is The Grammar Of Graphics?</p>
+<p>The basic idea: independently specify plot building blocks and combine them to create just about any kind of graphical display you want. Building blocks of a graph include:</p>
+<ul>
+<li>data - where is the data located</li>
+<li>aesthetic mapping - what are your x, y, and grouping variables?<br />
+</li>
+<li>geometric object - what type of plot do you want to create</li>
+<li>statistical transformations - log transform (or others)?</li>
+<li>scales</li>
+<li>coordinate system</li>
+<li>position adjustments</li>
+<li>faceting - creating separate figures “by” some value, but using the same scale, variables, labels, etc.</li>
+<li>themes - color schemes used for plots, such as background color, axis defaults
+<ul>
+<li><code>theme_gray()</code> (default)</li>
+<li><code>theme_bw()</code></li>
+<li><code>theme_classc()</code></li>
+</ul></li>
+</ul>
+<p><em>Geometic Objects</em></p>
+<p>Geometric objects are the actual marks we put on a plot. Examples include:</p>
+<ul>
+<li>points (geom_point, for scatter plots, dot plots, etc)</li>
+<li>lines (geom_line, for time series, trend lines, etc)</li>
+<li>boxplot (geom_boxplot, for boxplots)</li>
+</ul>
+<p>A plot must have at least one geom; there is no upper limit. You can add a geom to a plot using the + operator</p>
+<p>You can get a list of available geometric objects using the code below. There are also lots of examples of different types of plots available on the web (just include <code>ggplot</code> in your search).</p>
+<pre><code>help.search(&quot;geom_&quot;, package = &quot;ggplot2&quot;)</code></pre>
+<p>Try working through this <a href="https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html#putting_it_all_together">R graphics tutorial</a> to learn more.</p>
+</div>
+</div>
+<div id="appendix-2-r-for-sas-programmers" class="section level2">
+<h2><span class="header-section-number">2.2</span> Appendix 2: R for SAS programmers</h2>
+<p>If you tend to “think SAS”, then making the switch to R can be challenging. A couple book that might help include:</p>
+<ul>
+<li><em>SAS and R: Data Management, Statistical Analysis, and Graphics</em> by Kleinman and Horton</li>
+<li><em>R for SAS and SPSS Users</em> by Robert Muenchen</li>
+</ul>
+<p>Below are a few select tasks and the packages/functions that handle those tasks.</p>
+<table>
+<caption><span id="tab:unnamed-chunk-2">Table 2.1: </span>Reading and Writing files</caption>
+<colgroup>
+<col width="37%" />
+<col width="11%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">task</th>
+<th align="left">package</th>
+<th align="left">function</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">read SAS dataset</td>
+<td align="left">haven</td>
+<td align="left">read_sas()</td>
+</tr>
+<tr class="even">
+<td align="left">read csv dataset</td>
+<td align="left">readr</td>
+<td align="left">read_csv()</td>
+</tr>
+<tr class="odd">
+<td align="left">read excel file</td>
+<td align="left">readxl</td>
+<td align="left">read_excel()</td>
+</tr>
+<tr class="even">
+<td align="left">read in multiple files</td>
+<td align="left">rlocal</td>
+<td align="left">read.all()</td>
+</tr>
+<tr class="odd">
+<td align="left">write csv file</td>
+<td align="left">readr</td>
+<td align="left">write_csv()</td>
+</tr>
+<tr class="even">
+<td align="left">write excel file</td>
+<td align="left">openxlsx</td>
+<td align="left">write.xlsx()</td>
+</tr>
+<tr class="odd">
+<td align="left">write object to Word/HTML/PDF</td>
+<td align="left">arsenal</td>
+<td align="left">write2word(), write2html(), write2pdf()</td>
+</tr>
+<tr class="even">
+<td align="left">write text to file</td>
+<td align="left">base</td>
+<td align="left">sink()</td>
+</tr>
+<tr class="odd">
+<td align="left">print pretty markdown table</td>
+<td align="left">knitr</td>
+<td align="left">kable()</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption><span id="tab:unnamed-chunk-3">Table 2.2: </span>Manipulating data</caption>
+<thead>
+<tr class="header">
+<th align="left">task</th>
+<th align="left">package</th>
+<th align="left">function</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">summarize dataset</td>
+<td align="left">summarytools</td>
+<td align="left">dfSummary()</td>
+</tr>
+<tr class="even">
+<td align="left">create data from m, d, y</td>
+<td align="left">arsenal</td>
+<td align="left">mdy.Date()</td>
+</tr>
+<tr class="odd">
+<td align="left">compare 2 datasets</td>
+<td align="left">arsenal</td>
+<td align="left">comparedf()</td>
+</tr>
+<tr class="even">
+<td align="left">transpose data</td>
+<td align="left">tidyr</td>
+<td align="left">gather() and spread()</td>
+</tr>
+<tr class="odd">
+<td align="left">create categorical data from continuous</td>
+<td align="left">base</td>
+<td align="left">cut()</td>
+</tr>
+<tr class="even">
+<td align="left">X in (‘a’,‘b’,‘c’)</td>
+<td align="left">base</td>
+<td align="left">%in%, match()</td>
+</tr>
+<tr class="odd">
+<td align="left">X NOT in (‘a’,‘b’,‘c’)</td>
+<td align="left">arsenal</td>
+<td align="left">%nin%</td>
+</tr>
+<tr class="even">
+<td align="left">concatenate strings</td>
+<td align="left">base</td>
+<td align="left">paste0()</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption><span id="tab:unnamed-chunk-4">Table 2.3: </span>Modeling and Statistical Tests</caption>
+<thead>
+<tr class="header">
+<th align="left">task</th>
+<th align="left">package</th>
+<th align="left">function</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">table 1, unpaired data</td>
+<td align="left">arsenal</td>
+<td align="left">tableby()</td>
+</tr>
+<tr class="even">
+<td align="left">table 1, paired data</td>
+<td align="left">arsenal</td>
+<td align="left">paired()</td>
+</tr>
+<tr class="odd">
+<td align="left">correlations</td>
+<td align="left">stats</td>
+<td align="left">cor.test()</td>
+</tr>
+<tr class="even">
+<td align="left">partial correlations</td>
+<td align="left">ppcor</td>
+<td align="left">pcor.test()</td>
+</tr>
+<tr class="odd">
+<td align="left">binomial CI</td>
+<td align="left">rlocal</td>
+<td align="left">cibinom()</td>
+</tr>
+<tr class="even">
+<td align="left">poisson CI</td>
+<td align="left">survival</td>
+<td align="left">cipoisson()</td>
+</tr>
+<tr class="odd">
+<td align="left">t-tests</td>
+<td align="left">stats</td>
+<td align="left">t.test()</td>
+</tr>
+<tr class="even">
+<td align="left">Wilcoxon/Kolmogorov-Smirnov test</td>
+<td align="left">stats</td>
+<td align="left">wilcox.test(), ks.test()</td>
+</tr>
+<tr class="odd">
+<td align="left">linear regression</td>
+<td align="left">stats</td>
+<td align="left">lm()</td>
+</tr>
+<tr class="even">
+<td align="left">logistic regression</td>
+<td align="left">stats</td>
+<td align="left">glm(, family=binomial)</td>
+</tr>
+<tr class="odd">
+<td align="left">poisson regression</td>
+<td align="left">stats</td>
+<td align="left">glm( , family=poisson)</td>
+</tr>
+<tr class="even">
+<td align="left">negative binomial regression</td>
+<td align="left">MASS</td>
+<td align="left">glm.nb()</td>
+</tr>
+<tr class="odd">
+<td align="left">cox regression</td>
+<td align="left">survival</td>
+<td align="left">coxph()</td>
+</tr>
+<tr class="even">
+<td align="left">quantile regression</td>
+<td align="left">quantreg</td>
+<td align="left">rq()</td>
+</tr>
+<tr class="odd">
+<td align="left">robust regression</td>
+<td align="left">MASS</td>
+<td align="left">rlm()</td>
+</tr>
+<tr class="even">
+<td align="left">generalized additive regression</td>
+<td align="left">gam</td>
+<td align="left">gam()</td>
+</tr>
+<tr class="odd">
+<td align="left">create table from multiple models</td>
+<td align="left">arsenal</td>
+<td align="left">modelsum()</td>
+</tr>
+<tr class="even">
+<td align="left">linear mixed effects (random slope) model</td>
+<td align="left">nlme</td>
+<td align="left">lme()</td>
+</tr>
+<tr class="odd">
+<td align="left">person-years analysis</td>
+<td align="left">survival</td>
+<td align="left">pyears()</td>
+</tr>
+<tr class="even">
+<td align="left">incidence rates</td>
+<td align="left">rlocal</td>
+<td align="left">poprates()</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="scenario-1-getting-familiar-with-a-new-project.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"toc": {
+"collapse": "none",
+"toc_depth": 4
+}
+});
+});
+</script>
+
+</body>
+
+</html>
