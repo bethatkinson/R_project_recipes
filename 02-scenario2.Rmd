@@ -1,0 +1,583 @@
+# Scenario 2: In Depth Modeling and Plotting with Cleaned Data
+
+```{r results='hide', message=FALSE, warning=FALSE, echo=FALSE}
+source('setup.R')
+library(tidyverse)
+library(haven)
+```
+
+You are working on a project and have cleaned the data using SAS but you would like to create a summary report using R markdown.  The study has eleven covariates and three endpoints:  discharge status (alive/deceased), time-to-tvr (tricuspid valve replacement), and time-to-death.  The investigator is interested in understanding the relationship of the covariates with the different endpoints.  Note that some of the covariates have missing values. Also, the investigator would like to see a figure showing the cumulative incidence of TVR curve.  
+
+## Your Mission
+
+* Read in dataset "data2.sas7bdat".  This data was cleaned and labelled in SAS, but you may need to modify some of the variables slightly so that they produce the right summaries.  For instance, a number of the variables have the SAS format where 1='No' and 2='Yes'.  The variable `recentmi` has four levels: `<24 hrs, 1-7 days, >7 days, never`.  Explore the data and modify the variables as you see fit.  Create a list of the variable labels for use in summaries.  
+
+* Investigate the missing data patterns.  This could be graphically or with tables.
+
+* Create a Kaplan-Meier curve of death for subjects by gender
+    - Create a time to death variable (difference between dates). Look at a summary of this new variable. 
+    
+* Create a cumulative incidence curve of TVR where death is treated as a competing risk.  Steps include:
+    - Create a time-to-tvr variable  
+    - Stratify the curves by gender 
+
+* Run a linear regression model for bmi with the covariates age and sex.  Check the modeling assumptions. 
+* Run logistic models for `dischargestatus` and create summary tables for each covariate.
+    - Investigate the `modelsum()` function in the `arsenal` package and `tidy()` in the `broom` package.
+    
+* Run Cox models for `tm2lfu` and create summary tables for each covariate.
+    - write results to a separate file
+    - check model assumptions
+
+* Perform multiple imputation and rerun the logistic regression models
+
+
+## Implementation
+
+### Read and summarize data
+
+```{r message=FALSE}
+# Strongly encouraged to set this option!
+options(stringsAsFactors=F)
+
+# Include tidyverse and arsenal to have some basic packages
+library(tidyverse)
+library(arsenal)
+
+# Read in data
+library(haven)
+
+# link to data on GitHub page if not already downloaded
+if(!file.exists("data/dat1.sas7bdat")) {
+  urlfile <- "https://raw.githubusercontent.com/bethatkinson/R_project_recipes/data/dat1.sas7bdat"
+  if(!dir.exists("data")) dir.create("data")
+  download.file(urlfile, destfile = "data/dat1.sas7bdat")
+}
+
+d1 <- read_sas('data/data2.sas7bdat')
+names(d1)
+```
+
+Sometimes variable names have mixed cases, have underscores, or even spaces (especially if reading in data from Excel).  The 
+`make.names` function removes special characters and spaces from variables names.  The option `allow_` turns underscores to periods.  The `tolower` function changes text so that they are all lowercase.  
+
+```{r}
+# Change variable names to all lowercase and change underscores to "."
+names(d1) <- tolower(make.names(names(d1), allow_=F))
+names(d1)
+
+# quick exploration of data
+library(summarytools)
+dfSummary(d1, graph.col=FALSE)
+```
+
+There are several variables that are coded as numbers that we want treated as factors with descriptive values (e.g. No/Yes).  The code below loops over all of these No/Yes variables and changes the variables to factors.  Tip: this code only works if you specify the variables using `d1[[i]]`.  It will not work if you use `d1[,i]`.
+
+```{r}
+# Change variables with the values 1/2 to formats with the values No/Yes. 
+# Note the use of d1[[i]] to indicate each variable
+ynvars <- c('cardioshock','diabetes','hypertension','currsmoker','msrenaldis',
+            'intrapostmi')
+for(i in ynvars) d1[[i]] <- factor(d1[[i]], levels=1:2, labels=c('No','Yes'))
+```
+
+Now create some other factors.
+
+```{r}
+# Change discharge status variable to Alive/Deceased
+d1$dischargestatus <- factor(d1$dischargestatus, levels=1:2, 
+                             labels=c('Alive','Deceased'))
+```
+
+In the code below, the level 'Never' was moved to the first position so that it can serve as the reference group in models. In models, R by default uses the first level as the reference. 
+
+```{r}
+# Chance order of recentmi levels
+d1$recentmi <- factor(d1$recentmi, levels=4:1, 
+                      labels=c('Never', '>7 days', '1-7 days', '<24 hrs'),
+                      ordered = TRUE)
+```
+
+This next section of code is a bit tricky, but it demonstrates how to create a mapping between variable labels and variable names, which is useful for `tableby` and plotting. There are several different functions introduced here including  [sapply](https://www.rdocumentation.org/packages/base/versions/current/topics/lapply), [unlist](https://www.rdocumentation.org/packages/base/versions/current/topics/unlist), and [function(x)](https://www.statmethods.net/management/userfunctions.html).  
+
+Step 1 essentially takes a dataframe (which is a special type of list), then it uses the `sapply` function to look at each element in the list (here, each variable) and extracts the label.  Finally it takes the results and changes them to be a vector.
+
+Step 5 uses the [filter()](https://www.rdocumentation.org/packages/dplyr/versions/current/topics/filter) function which is a part of the `dplyr` package.  It keeps all observations where the `labels` variable is missing, as determined by `is.na()`.  
+
+```{r}
+# 1. Create a named vector of available labels 
+# The arsenal package has the function "label()"
+label(d1$age)
+
+vlabels <- unlist(sapply(d1, FUN=label))
+
+# 2. Create a data frame of of variables with labels [vars=variable name, labels=variable label]
+tmp1 <- data.frame(vars=names(vlabels), labels=vlabels)
+# 3. Create a data frame of all variables in the dataset
+tmp2 <- data.frame(vars=names(d1)) 
+# 4. Merge together so all variables are represented
+labeldata <- merge(tmp1, tmp2, all=T, by='vars') 
+
+# Check to see what is missing and add in your own labels 
+# 5. Check to see which variables do not have labels
+labeldata %>% filter(is.na(labels))
+# 6. Add labels to those variables
+# Note: order must match to order of variables with missing labels in  'labeldata'
+labeldata$labels[is.na(labeldata$labels)] <- c('Cardiogenic shock','Current smoker',
+                                               'Diabetes mellitus', 'In-hospital death',
+                                               'Hypertension','MI complication',
+                                               'Moderate/Severe renal disease', 'Recent MI')
+
+# These next two lines create a list called vlabels and sets things up so that
+# the variable labels can be accessed by their variable names.
+# For example vlabels$dt.death or vlabels[['dt.death']] will return 'Death date'
+vlabels <- as.list(labeldata$labels)
+names(vlabels) <- labeldata$vars
+
+# create a vector of covariates
+covar <- c('age','gender','recentmi','cardioshock','diabetes','hypertension','bmi','currsmoker',
+           'msrenaldis','numdisvessels','intrapostmi')
+```
+
+### Investigate missing data
+
+From the `dfsummary` it is apparent that there is some missing data. Before doing any modeling, it would be helpful to better understand the missingness patterns.  The [apply()](https://www.rdocumentation.org/packages/base/versions/current/topics/apply) function is helpful in that it takes a matrix or dataframe, and does something to each row (`MARGIN=1`) or column (`MARGIN=2`).  In this case, it uses the function `sum()` to summarize the number of missings found in the dataframe `is.na(d1)`.
+
+```{r missingness}
+# How many missing values are there for each variable?
+tmp <- is.na(d1)
+head(tmp)
+sum(tmp[,2]) # look at 1 variable
+apply(tmp, MARGIN=2, FUN=sum) # use apply to examine all variables
+
+# What is the distribution of missing values by subject?
+sum(tmp[2,]) # look at 1 subject
+subj.na <- apply(tmp, MARGIN=1, FUN=sum) # use apply to examine all subjects
+table(subj.na)
+
+# Repeat, but only include covariates
+subj.na <- apply(is.na(d1[,covar]), MARGIN=1, FUN=sum)
+table(subj.na)
+```
+
+There are a number of different packages available to visually explore missing data.  The code below illustrates one package called [`naniar`](https://cran.r-project.org/web/packages/naniar/vignettes/getting-started-w-naniar.html) written by Nick Tierney.
+
+```{r}
+library(naniar)
+
+vis_miss(d1[,covar], cluster=TRUE) # cluster observations by missingness
+
+gg_miss_var(d1[,covar], show_pct=TRUE)
+gg_miss_var(d1[,c('dischargestatus',covar)], show_pct=TRUE, facet=dischargestatus)
+```
+
+Classification trees using the package `rpart` can also sometimes be helpful when looking for missingness patterns, especially if you want to understand why a particular variable is missing and whether it is related to any other variable.
+
+```{r}
+library(rpart)
+library(rpart.plot)
+
+# determine what is associated with missing information about hypertension 
+fit <- rpart(is.na(hypertension) ~ ., data=d1, method='class', minsplit=10)
+printcp(fit)
+rpart.plot(fit, type=2, extra=101)
+```
+
+Running `rpart()` with the default settings didn't create any splits because it requires 20 subjects in a node before any splits can be made (`minsplit` option).  Based on the `printcp()` summary, it appears that 4 splits are necessary to gain much of an improvement in the classification error.  The plot suggests that there might be more missingness for those who were alive at discharge and were age 58+.
+
+For now, we are going to proceed, recognizing that missingness is an issue.
+
+### Kaplan-Meier
+
+In order to create a KM curve we need time variables and right now we just have dates.
+
+```{r km}
+# First attempt - days from Index Date to LFU Date
+d1$tm2death <- d1$dt.lfu - d1$dt.index
+summary(d1$tm2death) 
+# This is not so helpful, because subtracting dates creates an object of class "difftime"
+# Instead, let's make a numeric object
+d1$tm2death <- as.numeric(d1$dt.lfu - d1$dt.index)
+summary(d1$tm2death) 
+
+# Create a default KM curve
+library(survival)
+fit <- survfit(Surv(tm2death, s.death) ~ gender, data=d1)
+plot(fit, col=1:2, lty=1:2, xscale=365.25, xlab='Follow-up, years', ylab='Probability of Survival')
+legend('topright', legend=c('Female','Male'), col=1:2, lty=1:2, bty='n')
+
+# If you want the survival estimates at specific time points, use the summary function
+summary(fit, times=365.25*0:10)
+
+# Fancier plot including table indicating number at risk
+library(survminer)
+
+ggsurvplot(fit, risk.table=TRUE, pval=TRUE, censor=FALSE, 
+           xscale=365.25, break.time.by=5*365.25)
+```
+
+### Cumulative Incidence
+
+Now look at the time to TVR where death is treated as a competing risk.
+
+```{r comprisk}
+# Create time to TVR (if event) or LFU
+# The pmin function estimates the smallest value, by row, not including missings
+d1$tm2tvr <- as.numeric(pmin(d1$dt.tvr, d1$dt.lfu, na.rm=T) - d1$dt.index)
+
+# Create event variable with 3 levels: censor, TVR, death
+with(d1, table(death=s.death, tvr=s.tvr))
+d1$event <- with(d1, ifelse(s.tvr==0, 2*s.death, 1))
+table(d1$event)
+# In order to do competing risks, the status variable must be a factor
+d1$event <- factor(d1$event, levels=0:2, labels=c('censor','tvr','death'))
+
+# confirm coding makes sense
+library(arsenal)
+summary(freqlist(table(new_event=d1$event, tvr = d1$s.tvr, death = d1$s.death)))
+
+# Fit the cumulative incidence curves 
+fit <- survfit(Surv(tm2tvr, event) ~ gender, data=d1)
+fit
+plot(fit, col=c(1,1,2,2), lty=c(2,1,2,1), xscale=365.25, xlab='Follow-up, years', ylab='Probability')
+legend("topleft", c('female: tvr','male: tvr','female: death', 'male: death'), lty=c(2,1,2,1), col=c(1,1,2,2), bty='n')
+
+## look at only certain portions of the survfit object
+## rows=strata, columns=states 
+dim(fit)
+fit$strata
+fit$states
+
+# re-plot, just including tvr 
+fit2 <- fit[,2]
+fit2 # confirm that this just picks up the tvr events
+
+plot(fit2, col=1:2, lty=1:2, xscale=365.25, xlab='Follow-up, years', 
+     ylab='Cumulative Incidence of TVR', xmax=11*365.25)
+legend('topleft', legend=c('Female','Male'), col=1:2, lty=1:2, bty='n')
+
+## Fit model
+cfit <- coxph(Surv(tm2tvr, event) ~ gender, data=d1, id=id)
+
+## If you are just interested in tvr, then you get the same results using
+cfit2 <- coxph(Surv(tm2tvr, event=='tvr') ~ gender, data=d1, id=id)
+```
+
+### Linear regression model
+
+Assess how BMI differs by age and gender, then check the model assumptions.  Don't assume that the functional form for age is linear.  The `splines` package includes the natural splines function `ns`. 
+
+```{r}
+library(splines) # needed to load the ns() function
+fit <- lm(bmi ~ ns(age, df=3) + gender, data=d1)
+summary(fit)
+
+# plot the curvature
+termplot(fit, term=1, se=T, rug=T)
+
+# visually check model assumptions
+plot(fit)
+
+# summarize residuals
+summary(resid(fit))
+```
+
+The following code plots the relationship between age and BMI separately for males and females with a smoother through the points, providing further insight into the data. 
+
+```{r}
+ggplot(d1, aes(x=age, y=bmi)) + geom_point(alpha=.1) + geom_smooth(span=1) + facet_wrap(~gender)
+```
+
+### Logistic regression models
+
+Assess which risk factors predict the discharge status: `dischargestatus`.
+
+```{r logist}
+d1$dischargestatus01 <- as.numeric(d1$dischargestatus)-1 
+with(d1, table(dischargestatus01,dischargestatus))
+
+# Look at a simple model: the association between gender and in-hospital death
+fit3 <- glm(dischargestatus01 ~ gender, data=d1, family='binomial')
+summary(fit3)
+```
+
+The `broom` package allows users to extract information from a model and save it as a `data.frame`.  The two main functions in `broom` are `tidy()`, which returns a tidy version of the model coefficients, and `glance()` which returns a one-row glance at the model's statistics. There is also the function `augment()` which augments the original data with information such as the fitted values and residuals.
+
+```{r}
+# Look at a tidy model summary (data frame)
+library(broom)
+# "exponentiate=TRUE" exponentiates the estimates, including the intercept
+tmp <- tidy(fit3, exponentiate=TRUE, conf.int=TRUE)
+print(tmp, digits=3) 
+# Remove the intercept line
+print(tmp[-1,], digits=3)
+glance(fit3)
+```
+
+This is fine for a small number of models, but if you want to summarize results for multiple models, perhaps adjusting for a certain set of covariates, then it is time to use a different tool.  The `modelsum()` in `arsenal` creates such summaries.  For logistic regression models (`family='binomial'`), the results are automatically shown with odd's ratios and confidence intervals, plus the concordance (AUC) value and the number of missing values for that variable.
+
+```{r, results='asis'}
+# Use formulize in arsenal to create a formula to pass to modelsum
+myform <- formulize(y='dischargestatus01',x=covar)
+tmp <- modelsum(myform, family='binomial', data=d1)
+summary(tmp, show.intercept=F, title='Hospital Discharge: Univariate analysis')
+
+# Note - because recentmi is an ordered factor, R tries to model it with
+# Linear/Quadradic/Cubic. Try creating covar2 - see the difference
+covar2 <- c('age','gender','as.numeric(recentmi)','cardioshock','diabetes',
+           'hypertension','bmi','currsmoker',
+           'msrenaldis','numdisvessels','intrapostmi')
+myform2 <- formulize(y='dischargestatus01',x=covar2)
+tmp2 <- modelsum(myform2, family='binomial', data=d1)
+summary(tmp2, show.intercept=F, title='Hospital Discharge: Univariate analysis')
+
+```
+
+```{r}
+# save results as a data frame and output results to a csv file
+foroutput <- as.data.frame(tmp)
+head(foroutput)
+write.csv(foroutput, file='~/ibm/testoutput.csv')
+```
+
+You can also use `modelsum` to look at results after adjusting for variables such as age and gender.
+
+```{r, results='asis'}
+tmp2 <- modelsum(dischargestatus01 ~ as.numeric(recentmi) + cardioshock, adjust= ~age + gender, data=d1,
+                 family='binomial')
+summary(tmp2, show.intercept=F, show.adjust=F, title='Hospital Discharge: Results of key variables after adjusting for age and gender')
+```
+
+Alternative code for looping through variables is shown at the [end of this document](#alt-loop).
+
+You might also want to look at the functional form of age as it relates to the endpoint. The `termplot()` function is a quick way to see if there are indications that the relationship may be non-linear. Here we used the spline function `ns()` with 3 degrees of freedom to look for non-linearity. 
+
+```{r}
+fit4 <- glm(dischargestatus01 ~ ns(age, df=3), data=d1, family='binomial')
+termplot(fit4, se=TRUE, rug=TRUE)
+summary(fit4)
+anova(fit4, test='Chi')
+
+# Test whether non-linearity is significant by comparing to linear model
+fit5 <- glm(dischargestatus01 ~ age, data=d1, family='binomial')
+anova(fit5, fit4, test='Chi')
+```
+
+### Cox regression models
+
+Assess which risk factors predict the endpoint `tm2death`.
+
+```{r cox}
+# First, a simple model for gender only
+fit6 <- coxph(Surv(tm2death, s.death) ~ gender, data=d1)
+summary(fit6)
+```
+
+The `broom` package can be used with survival objects as well.
+
+```{r}
+# Look at a tidy model summary (data frame)
+tmp <- tidy(fit6, exponentiate=TRUE, conf.int=TRUE)
+print(tmp, digits=3)
+glance(fit6)
+```
+
+Here is how you would use  `modelsum()` for Cox models.
+
+```{r, results='asis'}
+myform <- formulize(y='Surv(tm2death, s.death)', x=covar2)
+tmp <- modelsum(myform, family='survival', data=d1)
+summary(tmp, show.intercept=F, title='Overall survival: Univariate analysis')
+```
+
+You might also want to look at the functional form of age as it relates to the endpoint. The `termplot()` function is a quick way to see if there are indications that the relationship may be non-linear. Here we used the penalized spline `pspline()` with 4 degrees of freedom to look for non-linearity. 
+
+```{r}
+fit7 <- coxph(Surv(tm2death, s.death) ~ pspline(age,df=4), data=d1)
+termplot(fit7, se=TRUE, rug=TRUE)
+fit7 # test linear and nonlinear portions of the fit for significance
+anova(fit7) # overall test
+```
+
+Finally, it is good to do some basic model checks on your results. The coefficient in a Cox model is an average of the estimated beta over all the event times. The proportional hazards model assumes that this coefficient is constant over time, however that is not always true. The `cox.zph` function creates time-dependent coefficients for more detailed examination. The printout of `cox.zph` summarizes the correlation of Beta(time) vs time for each variable. The plot of `cox.zph` visualizes the relationship. It is important to look at the plot to understand the summary.
+
+In the `coxph` function, as with some (but not all) of the other model functions in R, there are several options for handling missing values. The default `na.omit` option and the `na.exclude` option both remove any missing values from the fit. They differ in that the former returns residuals only for the non-missing values and the latter returns residuals with the same number of rows as the input data. If you want to compare residuals to the original data then it is more convenient to use `na.exclude` (not the default); if you are going to calculate summaries such as quantiles then the former is more convenient because missing values will have been removed.
+
+```{r}
+# Change option because we will want to look at residuals later on
+options(na.action=na.exclude)
+fit8 <- coxph(Surv(tm2death, s.death) ~ age + gender + cardioshock, data=d1)
+zfit8 <- cox.zph(fit8)
+
+zfit8
+plot(zfit8[3]) # look at 3rd variable, hard to view
+plot(zfit8[3], resid=FALSE) # plot without residuals
+abline(h=coef(fit8)[3], col=2) # coef estimate
+abline(h=0, col=3)
+```
+
+Based on this, it appears that we might need to treat early deaths (likely those in the hospital) different from those that appear after discharge.  Perhaps we might want to start follow-up after discharge if that information is available.
+
+Leverage points are also sometimes an issue. Dfbeta residuals offer one way to check for influential points. It allows you to see how much the estimate of Beta would change if one point was deleted.
+
+```{r}
+rr <- resid(fit8, type='dfbeta')
+dim(rr)
+
+# color by status - residuals are all in the 4th decimal so nothing too large
+plot(d1$age, rr[,1], col=d1$s.death+1)
+```
+
+
+### Missingness revisited: Imputation
+
+There are multiple packages that do multiple imputation in R (see [article](https://www.analyticsvidhya.com/blog/2016/03/tutorial-powerful-packages-imputing-missing-values/) for review). In the code below we've chosen to use the `mice` package (Multivariate Imputation via Chained Equations).
+
+Recommendations:
+* need to include the endpoint in the imputation
+* if using multiple models/endpoints, just impute everything once including all the variables
+* imputing continuous variables is much easier than categorical
+     - The default "mice" method is predictive mean matching (pmm) for numeric variables, logistic
+        regression (logreg) for two level factors, polytomous regression (polyreg) for unordered
+        categorical variables, and proportional odds regression (polyr) for ordered factors.
+        You can also specify different methods for different variables within the same call.
+     - The mice package does not like dates
+     - Other methods for imputation are also available besides these defaults 
+
+```{r mice}
+library(mice)
+library(dplyr)
+
+# Create data frame "sub" which excludes date variables, status variables and id
+sub <- d1 %>% select(-starts_with("dt"), -starts_with("s."), -id)
+# Create 5 imputed datasets
+imputed_d1 <- mice(sub, m=5, printFlag=FALSE, set.seed=123) # create 5 datasets, don't print log
+
+# fit multiple models with imputed data, then combine the results
+fits <- with(imputed_d1, glm(dischargestatus01 ~ diabetes, family='binomial'))
+
+# Pool function combines the results of the 5 imputed datasets
+pool.fits <- pool(fits)
+summary(pool.fits)
+# fmi = fraction of information about the coefficients missing due to nonresponse
+
+# original value
+tidy(glm(dischargestatus01 ~ diabetes, data=d1, family='binomial'))
+```
+
+This is fine for 1 variable, but what if you want to look at multiple models using the imputed data?
+
+```{r}
+# create a list with 5 elements, each housing one of the new datasets
+imp.list <- list()
+for(i in 1:5){
+  tmp <- complete(imputed_d1, action=i)
+  imp.list[[i]] <- tmp
+}
+
+# run modelsum on each element of the list, store as a dataframe (again an element of a list)
+myform <- formulize(y='dischargestatus01', x=covar)
+
+# Write function to return modelsum results as a data frame
+myfun <- function(x) {
+  fit <- modelsum(myform, family='binomial', data=x, show.intercept=FALSE,
+                  binomial.stats=c('estimate','std.error','p.value','concordance','Nmiss'))
+  return(as.data.frame(fit))
+}
+
+# For each element in the list (each imputed dataset), run myfun()
+tmp <- lapply(imp.list, myfun)
+head(tmp[[1]])
+
+# look at coefficients from all the datasets
+
+# Create a list with the estimates from each model
+model.coef <- lapply(tmp, function(x) x$estimate)
+
+# use the cbind() function to bind the results together
+model.coef2 <- do.call(cbind, model.coef)
+
+# make this a dataframe 
+model.coef3 <- data.frame(matrix(model.coef2, nrow=nrow(model.coef2), ncol=ncol(model.coef2)))
+
+# add in rownames for the variables
+rownames(model.coef3) <- tmp[[1]]$term
+
+# label each column as imp1--imp5
+colnames(model.coef3) <- paste0('imp',1:5)
+
+# add in the mean of the 5 columns
+model.coef3$mean.est <- rowMeans(model.coef3)
+
+knitr::kable(model.coef3, digits=3)
+```
+
+
+## Resources
+
+### Technical details
+
+Report created: `r format(Sys.Date(), format="%B %d %Y")`  
+
+```{r}
+# Grab session info
+sessionInfo()
+```
+
+### Packages used
+
+* [haven](http://haven.tidyverse.org/)
+* [tidyverse](http://www.tidyverse.org/)
+* [summarytools](https://cran.r-project.org/web/packages/summarytools/vignettes/Introduction.html)
+     + [summarytools with rmarkdown](https://cran.r-project.org/web/packages/summarytools/vignettes/Recommendations-rmarkdown.html)
+* [arsenal](https://cran.r-project.org/web/packages/arsenal/index.html)
+* [broom](https://cran.r-project.org/web/packages/broom/vignettes/broom.html)
+* [survival](https//cran.r-project.org/web/packages/survival/index.html)
+* [naniar](https://cran.r-project.org/web/packages/naniar/vignettes/getting-started-w-naniar.html)
+* [mice](https://www.rdocumentation.org/packages/mice/versions/current/topics/mice)
+
+## Optional ways to code 
+
+### Fit multiple models and store results {#alt-loop}
+
+Sometimes the model you are fitting can't be handled by `modelsum`.  Here is some alternative code for looping through a set of variables and storing the results.
+
+```{r}
+## how many are there?
+nvar <- length(covar)
+
+## create matrix for storing results, label rows and columns
+fit.results <- matrix(NA, nrow=nvar, ncol=4, dimnames=list(covar, c('N','coef','std','p.value')))
+
+## loop through the variables
+for (i in 1:nvar) {
+
+  ## if the variable is in my dataset, proceed
+  if (!is.na(match(covar[i], names(d1)))) {
+
+    ## paste together the formula that I want to use
+    text <- paste("coxph(Surv(tm2death,s.death) ~  ", covar[i],
+                 " , data=d1)",sep="")
+    fit  <- eval(parse(text=text))
+
+    ## pull off the summary, print
+    prob <- summary(fit)
+    
+    ## pull off the coefficient and std.error (last row of fit)
+    fit.results[i,2:4] <- prob$coef[nrow(prob$coef),c(1,3,5)]
+    fit.results[i,1] <- prob$n
+    }
+  }
+
+```
+
+### Fit models "by" some variable
+
+In SAS you can run a model "by" some variable, such as gender.  In R you can do the same thing using the following code.  The `group_by()` function tells R to run the analysis by that variable (or variables) and the `do()` function tells R what to do. 
+
+```{r}
+ans <- d1 %>% group_by(gender) %>%
+  do(tidy(coxph(Surv(tm2death, s.death) ~ age  + cardioshock, data=.data), 
+          exponentiate=T, confint=T))
+ans
+```
