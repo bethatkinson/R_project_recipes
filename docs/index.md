@@ -9,7 +9,7 @@ link-citations: yes
 # {-}
 
 
-
+<img src="images/recipe-clipart-BiaE8BLMT.gif" style="display: block; margin: auto;" />
 
 # Preface {-}
 
@@ -34,8 +34,7 @@ The assumption is that users will have some basic knowledge of R.  Instead of re
 
     - Tidyverse is a collection of packages designed to work together to solve data science problems.  The figure below includes the stages of an analysis and the tidyverse packages developed for each stage.
 
-
-\begin{center}\includegraphics[width=0.8\linewidth]{images/Tidyverse} \end{center}
+<img src="images/Tidyverse.png" width="80%" style="display: block; margin: auto;" />
 
 Core tidyverse packages can be loaded into your R session with `library(tidyverse)`. The function `tidyverse_packages()` details what packages are in the `tidyverse` while the `search()` command shows what packages have been loaded.  There are additional packages that are considered a part of the tidyverse that are not automatically loaded.  Highlights of some of the key tidyverse packages are shown in the appendix. 
 

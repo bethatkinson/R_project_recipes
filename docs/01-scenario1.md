@@ -100,7 +100,7 @@ Another really useful function to use to explore data is the `str()` or "structu
 
 ```r
 > str(dat1)
-tibble [890 x 15] (S3: tbl_df/tbl/data.frame)
+tibble [890 × 15] (S3: tbl_df/tbl/data.frame)
  $ id        : num [1:890] 84681 89253 89499 90166 90291 ...
   ..- attr(*, "format.sas")= chr "BEST"
  $ age       : num [1:890] 57 64 75 54 71 71 66 56 50 43 ...
@@ -165,41 +165,24 @@ In the output below, the `class()` function is returning the class of each varia
 ```
 
 
-\begin{tabular}{l|l}
-\hline
-  & Type\\
-\hline
-id & numeric\\
-\hline
-age & numeric\\
-\hline
-arm & character\\
-\hline
-sex & character\\
-\hline
-futime & numeric\\
-\hline
-fustat & numeric\\
-\hline
-ps & numeric\\
-\hline
-hgb & numeric\\
-\hline
-bmi & numeric\\
-\hline
-alkphos & numeric\\
-\hline
-ast & numeric\\
-\hline
-mdqualitys & numeric\\
-\hline
-ageord & character\\
-\hline
-birthdt & Date\\
-\hline
-resintdt & Date\\
-\hline
-\end{tabular}
+
+|           |Type      |
+|:----------|:---------|
+|id         |numeric   |
+|age        |numeric   |
+|arm        |character |
+|sex        |character |
+|futime     |numeric   |
+|fustat     |numeric   |
+|ps         |numeric   |
+|hgb        |numeric   |
+|bmi        |numeric   |
+|alkphos    |numeric   |
+|ast        |numeric   |
+|mdqualitys |numeric   |
+|ageord     |character |
+|birthdt    |Date      |
+|resintdt   |Date      |
 
 Other options to this exercise can be found at the [end of this document](#alt-import).
 
@@ -490,15 +473,11 @@ Mistakes in data entry occur all the time. It is wise to check for duplicate rec
 ```
 
 
-\begin{tabular}{r|r|l|l|r}
-\hline
-id & age & arm & sex & bmi\\
-\hline
-101106 & 79 & F FOLFOX & Female & 3.059935\\
-\hline
-101106 & 79 & F FOLFOX & Female & 30.599346\\
-\hline
-\end{tabular}
+
+|     id| age|arm      |sex    |       bmi|
+|------:|---:|:--------|:------|---------:|
+| 101106|  79|F FOLFOX |Female |  3.059935|
+| 101106|  79|F FOLFOX |Female | 30.599346|
 
 
 This same code can be run using the following `dplyr` commands.  It also illustrates the use of "piping", which is what the 3 character string `%>%` is called. Basically, it allows you to combine a bunch of commands together without having to save out temporary datasets.  The `filter` command keeps only those observations where the condition is true.  The `select` function keeps only certain variables.
@@ -510,15 +489,11 @@ This same code can be run using the following `dplyr` commands.  It also illustr
 ```
 
 
-\begin{tabular}{r|r|l|l|r}
-\hline
-id & age & arm & sex & bmi\\
-\hline
-101106 & 79 & F FOLFOX & Female & 3.059935\\
-\hline
-101106 & 79 & F FOLFOX & Female & 30.599346\\
-\hline
-\end{tabular}
+
+|     id| age|arm      |sex    |       bmi|
+|------:|---:|:--------|:------|---------:|
+| 101106|  79|F FOLFOX |Female |  3.059935|
+| 101106|  79|F FOLFOX |Female | 30.599346|
 
 Now check to see if the observations are a complete duplicate or not.
 
@@ -830,59 +805,33 @@ Many times we are interested in the frequency of certain combinations of variabl
 ```
 
 
-\begin{tabular}{l|l|l|r}
-\hline
-sex & arm & ps & n\\
-\hline
-Female & A IFL & 0 & 46\\
-\hline
-Female & A IFL & 1 & 40\\
-\hline
-Female & A IFL & 2 & 8\\
-\hline
-Female & A IFL & NA & 13\\
-\hline
-Female & F FOLFOX & 0 & 54\\
-\hline
-Female & F FOLFOX & 1 & 44\\
-\hline
-Female & F FOLFOX & 2 & 6\\
-\hline
-Female & F FOLFOX & NA & 23\\
-\hline
-Female & G IROX & 0 & 50\\
-\hline
-Female & G IROX & 1 & 47\\
-\hline
-Female & G IROX & 2 & 8\\
-\hline
-Female & G IROX & NA & 12\\
-\hline
-Male & A IFL & 0 & 94\\
-\hline
-Male & A IFL & 1 & 64\\
-\hline
-Male & A IFL & 2 & 6\\
-\hline
-Male & A IFL & NA & 32\\
-\hline
-Male & F FOLFOX & 0 & 80\\
-\hline
-Male & F FOLFOX & 1 & 68\\
-\hline
-Male & F FOLFOX & 2 & 8\\
-\hline
-Male & F FOLFOX & NA & 16\\
-\hline
-Male & G IROX & 0 & 79\\
-\hline
-Male & G IROX & 1 & 61\\
-\hline
-Male & G IROX & 2 & 7\\
-\hline
-Male & G IROX & NA & 24\\
-\hline
-\end{tabular}
+
+|sex    |arm      |ps |  n|
+|:------|:--------|:--|--:|
+|Female |A IFL    |0  | 46|
+|Female |A IFL    |1  | 40|
+|Female |A IFL    |2  |  8|
+|Female |A IFL    |NA | 13|
+|Female |F FOLFOX |0  | 54|
+|Female |F FOLFOX |1  | 44|
+|Female |F FOLFOX |2  |  6|
+|Female |F FOLFOX |NA | 23|
+|Female |G IROX   |0  | 50|
+|Female |G IROX   |1  | 47|
+|Female |G IROX   |2  |  8|
+|Female |G IROX   |NA | 12|
+|Male   |A IFL    |0  | 94|
+|Male   |A IFL    |1  | 64|
+|Male   |A IFL    |2  |  6|
+|Male   |A IFL    |NA | 32|
+|Male   |F FOLFOX |0  | 80|
+|Male   |F FOLFOX |1  | 68|
+|Male   |F FOLFOX |2  |  8|
+|Male   |F FOLFOX |NA | 16|
+|Male   |G IROX   |0  | 79|
+|Male   |G IROX   |1  | 61|
+|Male   |G IROX   |2  |  7|
+|Male   |G IROX   |NA | 24|
 
 * **Fancier: create a formula from a list of variables that can used in tableby (hint: explore `formulize`)**
 
@@ -941,9 +890,7 @@ The `geom_*()` functions will define what type of plot to use (boxplot, scatterp
 > boxplot(dat2$bmi)
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/boxplots-1} \end{center}
+<img src="01-scenario1_files/figure-html/boxplots-1.png" width="80%" style="display: block; margin: auto;" />
 
 ```r
 > 
@@ -953,9 +900,7 @@ The `geom_*()` functions will define what type of plot to use (boxplot, scatterp
 Warning: Removed 19 rows containing non-finite values (stat_boxplot).
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/boxplots-2} \end{center}
+<img src="01-scenario1_files/figure-html/boxplots-2.png" width="80%" style="display: block; margin: auto;" />
 
 * **Now create the boxplots stratified by the treatment arm**
 
@@ -965,9 +910,7 @@ Warning: Removed 19 rows containing non-finite values (stat_boxplot).
 > boxplot(bmi ~ arm, data = dat2)
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-19-1} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-19-1.png" width="80%" style="display: block; margin: auto;" />
 
 ```r
 > 
@@ -976,9 +919,7 @@ Warning: Removed 19 rows containing non-finite values (stat_boxplot).
 Warning: Removed 19 rows containing non-finite values (stat_boxplot).
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-19-2} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-19-2.png" width="80%" style="display: block; margin: auto;" />
 
 * **Modify the axis labels and add a title to your plot.**
 
@@ -988,9 +929,7 @@ Warning: Removed 19 rows containing non-finite values (stat_boxplot).
 > boxplot(bmi ~ arm, data = dat2, xlab = " ", ylab = "BMI at baseline", main = "BMI distribution stratified by treatment group")
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-20-1} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-20-1.png" width="80%" style="display: block; margin: auto;" />
 
 ```r
 > 
@@ -1000,9 +939,7 @@ Warning: Removed 19 rows containing non-finite values (stat_boxplot).
 Warning: Removed 19 rows containing non-finite values (stat_boxplot).
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-20-2} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-20-2.png" width="80%" style="display: block; margin: auto;" />
 
 #### Scatterplots
 
@@ -1016,9 +953,7 @@ The call to `as.numeric(as.factor(arm))` turns the levels of `arm` to a factor w
 > plot(bmi ~ age, data = dat2, col = as.numeric(as.factor(arm)))
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-21-1} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-21-1.png" width="80%" style="display: block; margin: auto;" />
 
 ```r
 > 
@@ -1027,9 +962,7 @@ The call to `as.numeric(as.factor(arm))` turns the levels of `arm` to a factor w
 Warning: Removed 19 rows containing missing values (geom_point).
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-21-2} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-21-2.png" width="80%" style="display: block; margin: auto;" />
 
 * **Create these same scatterplots, side-by-side, separately for males and females**
 
@@ -1043,9 +976,7 @@ Warning: Removed 19 rows containing missing values (geom_point).
 +     main = "Males")
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-22-1} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-22-1.png" width="80%" style="display: block; margin: auto;" />
 
 ```r
 > par(mfrow = c(1, 1))
@@ -1055,9 +986,7 @@ Warning: Removed 19 rows containing missing values (geom_point).
 Warning: Removed 19 rows containing missing values (geom_point).
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-22-2} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-22-2.png" width="80%" style="display: block; margin: auto;" />
 
 * **Fancier: How would you add a regression line to these plots?  How about smoothers?**
 
@@ -1072,9 +1001,7 @@ Warning: Removed 19 rows containing non-finite values (stat_smooth).
 Warning: Removed 19 rows containing missing values (geom_point).
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-23-1} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-23-1.png" width="80%" style="display: block; margin: auto;" />
 
 ```r
 > 
@@ -1086,9 +1013,7 @@ Warning: Removed 19 rows containing non-finite values (stat_smooth).
 Warning: Removed 19 rows containing missing values (geom_point).
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-23-2} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-23-2.png" width="80%" style="display: block; margin: auto;" />
 
 ```r
 > 
@@ -1100,9 +1025,7 @@ Warning: Removed 19 rows containing non-finite values (stat_smooth).
 Warning: Removed 19 rows containing missing values (geom_point).
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-23-3} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-23-3.png" width="80%" style="display: block; margin: auto;" />
 
 There are many formating options for `ggplot` including `theme_bw` and the package [ggthemes[(https://rdrr.io/cran/ggthemes/)] which includes extra themes, geoms, and scales for ggplot2. Below, see how the plot has changed by just indicating the plotting theme.  Another addition is the `alpha` term which lightens the points (default=1). 
 
@@ -1115,9 +1038,7 @@ Warning: Removed 19 rows containing non-finite values (stat_smooth).
 Warning: Removed 19 rows containing missing values (geom_point).
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-24-1} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-24-1.png" width="80%" style="display: block; margin: auto;" />
 
 ### Basic Modeling
 
@@ -1678,7 +1599,7 @@ resintdt     resint.dt     format.sas
 
 ### Technical details
 
-Report created: September 21 2020 .
+Report created: September 22 2020 .
 
 When asking for help it is often useful to specify which version of R and which version of the packages you are using.
 
@@ -1857,17 +1778,17 @@ Some people like the `tibble` default and others do not.  If you want to remove 
 # A tibble: 890 x 15
       id   age arm   sex   futime fustat    ps   hgb   bmi alkphos   ast
    <dbl> <dbl> <chr> <chr>  <dbl>  <dbl> <dbl> <dbl> <dbl>   <dbl> <dbl>
- 1 84681    57 F FO~ Male     799      2     0  11.2    NA     102     7
- 2 89253    64 F FO~ Fema~     97      2     1  12.6    NA     272    62
- 3 89499    75 F FO~ Fema~    105      2     1  12.5    NA     169    23
- 4 90166    54 G IR~ Fema~    878      2     0  10.9    NA     247    23
+ 1 84681    57 F FO… Male     799      2     0  11.2    NA     102     7
+ 2 89253    64 F FO… Fema…     97      2     1  12.6    NA     272    62
+ 3 89499    75 F FO… Fema…    105      2     1  12.5    NA     169    23
+ 4 90166    54 G IR… Fema…    878      2     0  10.9    NA     247    23
  5 90291    71 A IFL Male      31      2     2   9.1    NA     304   115
- 6 91450    71 F FO~ Fema~   1046      1    NA  NA      NA      NA    NA
+ 6 91450    71 F FO… Fema…   1046      1    NA  NA      NA      NA    NA
  7 91486    66 A IFL Male      60      2     1  10.5    NA     196    39
  8 91504    56 A IFL Male     181      2     1  10.8    NA     252    77
- 9 91724    50 G IR~ Male     481      2     1  13.4    NA      69    13
+ 9 91724    50 G IR… Male     481      2     1  13.4    NA      69    13
 10 92079    43 A IFL Male     149      2    NA  NA      NA      NA    NA
-# ... with 880 more rows, and 4 more variables: mdqualitys <dbl>, ageord <chr>,
+# … with 880 more rows, and 4 more variables: mdqualitys <dbl>, ageord <chr>,
 #   birthdt <date>, resintdt <date>
 > dat1b
        id age      arm    sex futime fustat ps  hgb       bmi alkphos ast
@@ -1945,13 +1866,13 @@ Some people like the `tibble` default and others do not.  If you want to remove 
 # A tibble: 6 x 15
      id   age arm   sex   futime fustat    ps   hgb   bmi alkphos   ast
   <dbl> <dbl> <chr> <chr>  <dbl>  <dbl> <dbl> <dbl> <dbl>   <dbl> <dbl>
-1 84681    57 F FO~ Male     799      2     0  11.2    NA     102     7
-2 89253    64 F FO~ Fema~     97      2     1  12.6    NA     272    62
-3 89499    75 F FO~ Fema~    105      2     1  12.5    NA     169    23
-4 90166    54 G IR~ Fema~    878      2     0  10.9    NA     247    23
+1 84681    57 F FO… Male     799      2     0  11.2    NA     102     7
+2 89253    64 F FO… Fema…     97      2     1  12.6    NA     272    62
+3 89499    75 F FO… Fema…    105      2     1  12.5    NA     169    23
+4 90166    54 G IR… Fema…    878      2     0  10.9    NA     247    23
 5 90291    71 A IFL Male      31      2     2   9.1    NA     304   115
-6 91450    71 F FO~ Fema~   1046      1    NA  NA      NA      NA    NA
-# ... with 4 more variables: mdqualitys <dbl>, ageord <chr>, birthdt <date>,
+6 91450    71 F FO… Fema…   1046      1    NA  NA      NA      NA    NA
+# … with 4 more variables: mdqualitys <dbl>, ageord <chr>, birthdt <date>,
 #   resintdt <date>
 > head(dat1b)
      id age      arm    sex futime fustat ps  hgb bmi alkphos ast mdqualitys
@@ -2187,18 +2108,12 @@ Here is a fancy table showing which line in the data is completely duplicated, h
 > kable(dat1[duplicated(dat1), ] %>% select("id", "age", "arm", "sex", "bmi"), caption = "Duplicate Records")
 ```
 
-\begin{table}
-
-\caption{(\#tab:unnamed-chunk-45)Duplicate Records}
-\centering
-\begin{tabular}[t]{r|r|l|l|r}
-\hline
-id & age & arm & sex & bmi\\
 
 
-\hline
-\end{tabular}
-\end{table}
+Table: (\#tab:unnamed-chunk-45)Duplicate Records
+
+| id| age|arm |sex | bmi|
+|--:|---:|:---|:---|---:|
 
 Here is another option for creating a version of the dataset without duplicates using the `dplyr` package.
 
@@ -2355,9 +2270,7 @@ Here are some alternatives for creating the boxplots using `ggplot`.
 Warning: Removed 19 rows containing non-finite values (stat_boxplot).
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-50-1} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-50-1.png" width="80%" style="display: block; margin: auto;" />
 
 ```r
 > 
@@ -2368,9 +2281,7 @@ Warning: Removed 19 rows containing non-finite values (stat_boxplot).
 Warning: Removed 19 rows containing non-finite values (stat_boxplot).
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-50-2} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-50-2.png" width="80%" style="display: block; margin: auto;" />
 
 ```r
 > 
@@ -2386,9 +2297,7 @@ Warning: Removed 19 rows containing non-finite values (stat_boxplot).
 Warning: Removed 19 rows containing non-finite values (stat_boxplot).
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-50-3} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-50-3.png" width="80%" style="display: block; margin: auto;" />
 
 * Now make two scatterplots side-by-side, split by sex
 
@@ -2413,9 +2322,7 @@ Warning: Removed 7 rows containing missing values (geom_point).
 Warning: Removed 12 rows containing missing values (geom_point).
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-51-1} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-51-1.png" width="80%" style="display: block; margin: auto;" />
 
 
 
@@ -2425,9 +2332,7 @@ Warning: Removed 12 rows containing missing values (geom_point).
 Warning: Removed 19 rows containing missing values (geom_point).
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-52-1} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-52-1.png" width="80%" style="display: block; margin: auto;" />
 
 * Fancier: How would you add a regression line to these plots?  How about smoothers? 
 
@@ -2456,9 +2361,7 @@ There are other packages that can do some of this work, but essentially this is 
 +     bty = "n")
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-53-1} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-53-1.png" width="80%" style="display: block; margin: auto;" />
 
 ```r
 > par(mfrow = c(1, 1))
@@ -2495,9 +2398,7 @@ There are other packages that can do some of this work, but essentially this is 
 +     bty = "n")
 ```
 
-
-
-\begin{center}\includegraphics[width=0.8\linewidth]{01-scenario1_files/figure-latex/unnamed-chunk-53-2} \end{center}
+<img src="01-scenario1_files/figure-html/unnamed-chunk-53-2.png" width="80%" style="display: block; margin: auto;" />
 
 ```r
 > par(mfrow = c(1, 1))

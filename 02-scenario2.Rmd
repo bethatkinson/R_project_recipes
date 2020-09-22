@@ -105,37 +105,27 @@ Step 1 essentially takes a dataframe (which is a special type of list), then it 
 Step 5 uses the [filter()](https://www.rdocumentation.org/packages/dplyr/versions/current/topics/filter) function which is a part of the `dplyr` package.  It keeps all observations where the `labels` variable is missing, as determined by `is.na()`.  
 
 ```{r}
-# 1. Create a named vector of available labels 
-# The arsenal package has the function "label()"
-label(d1$age)
+# 1. Pull all available labels 
+#    arsenal has the function labels that extracts all labels in the df
+d1_labels <- labels(d1)
 
-vlabels <- unlist(sapply(d1, FUN=label))
+# 2. Identify which variables don't have a label
+#    Which variables are missing
+names(d1)[names(d1)%nin%names(unlist(d1_labels))]
 
-# 2. Create a data frame of of variables with labels [vars=variable name, labels=variable label]
-tmp1 <- data.frame(vars=names(vlabels), labels=vlabels)
-# 3. Create a data frame of all variables in the dataset
-tmp2 <- data.frame(vars=names(d1)) 
-# 4. Merge together so all variables are represented
-labeldata <- merge(tmp1, tmp2, all=T, by='vars') 
-
-# Check to see what is missing and add in your own labels 
-# 5. Check to see which variables do not have labels
-labeldata %>% filter(is.na(labels))
-# 6. Add labels to those variables
-# Note: order must match to order of variables with missing labels in  'labeldata'
-labeldata$labels[is.na(labeldata$labels)] <- c('Cardiogenic shock','Current smoker',
-                                               'Diabetes mellitus', 'In-hospital death',
-                                               'Hypertension','MI complication',
-                                               'Moderate/Severe renal disease', 'Recent MI')
-
-# These next two lines create a list called vlabels and sets things up so that
-# the variable labels can be accessed by their variable names.
-# For example vlabels$dt.death or vlabels[['dt.death']] will return 'Death date'
-vlabels <- as.list(labeldata$labels)
-names(vlabels) <- labeldata$vars
+# 3. Add labels to those variables 
+d1_labels$cardioshock <- 'Cardiogenic shock'
+d1_labels$currsmoker <- 'Current smoker'
+d1_labels$diabetes <- 'Diabetes mellitus'
+d1_labels$dischargestatus <- 'In-hospital death'
+d1_labels$hypertension <- 'Hypertension'
+d1_labels$intrapostmi <- 'MI complication'
+d1_labels$msrenaldis <- 'Moderate/Severe renal disease'
+d1_labels$recentmi <- 'Recent MI'
 
 # create a vector of covariates
-covar <- c('age','gender','recentmi','cardioshock','diabetes','hypertension','bmi','currsmoker',
+covar <- c('age','gender','recentmi','cardioshock','diabetes','hypertension',
+           'bmi','currsmoker',
            'msrenaldis','numdisvessels','intrapostmi')
 ```
 

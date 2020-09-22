@@ -106,110 +106,58 @@ If you tend to "think SAS", then making the switch to R can be challenging.  A c
 
 Below are a few select tasks and the packages/functions that handle those tasks.
 
-\begin{table}
 
-\caption{(\#tab:unnamed-chunk-2)Reading and Writing files}
-\centering
-\begin{tabular}[t]{l|l|l}
-\hline
-task & package & function\\
-\hline
-read SAS dataset & haven & read\_sas()\\
-\hline
-read csv dataset & readr & read\_csv()\\
-\hline
-read excel file & readxl & read\_excel()\\
-\hline
-read in multiple files & rlocal & read.all()\\
-\hline
-write csv file & readr & write\_csv()\\
-\hline
-write excel file & openxlsx & write.xlsx()\\
-\hline
-write object to Word/HTML/PDF & arsenal & write2word(), write2html(), write2pdf()\\
-\hline
-write text to file & base & sink()\\
-\hline
-print pretty markdown table & knitr & kable()\\
-\hline
-\end{tabular}
-\end{table}
+Table: (\#tab:unnamed-chunk-2)Reading and Writing files
 
-\begin{table}
-
-\caption{(\#tab:unnamed-chunk-3)Manipulating data}
-\centering
-\begin{tabular}[t]{l|l|l}
-\hline
-task & package & function\\
-\hline
-summarize dataset & summarytools & dfSummary()\\
-\hline
-create data from m, d, y & arsenal & mdy.Date()\\
-\hline
-compare 2 datasets & arsenal & comparedf()\\
-\hline
-transpose data & tidyr & gather() and spread()\\
-\hline
-create categorical data from continuous & base & cut()\\
-\hline
-X in ('a','b','c') & base & \%in\%, match()\\
-\hline
-X NOT in ('a','b','c') & arsenal & \%nin\%\\
-\hline
-concatenate strings & base & paste0()\\
-\hline
-\end{tabular}
-\end{table}
+|task                          |package  |function                                |
+|:-----------------------------|:--------|:---------------------------------------|
+|read SAS dataset              |haven    |read_sas()                              |
+|read csv dataset              |readr    |read_csv()                              |
+|read excel file               |readxl   |read_excel()                            |
+|read in multiple files        |rlocal   |read.all()                              |
+|write csv file                |readr    |write_csv()                             |
+|write excel file              |openxlsx |write.xlsx()                            |
+|write object to Word/HTML/PDF |arsenal  |write2word(), write2html(), write2pdf() |
+|write text to file            |base     |sink()                                  |
+|print pretty markdown table   |knitr    |kable()                                 |
 
 
-\begin{table}
+Table: (\#tab:unnamed-chunk-3)Manipulating data
 
-\caption{(\#tab:unnamed-chunk-4)Modeling and Statistical Tests}
-\centering
-\begin{tabular}[t]{l|l|l}
-\hline
-task & package & function\\
-\hline
-table 1, unpaired data & arsenal & tableby()\\
-\hline
-table 1, paired data & arsenal & paired()\\
-\hline
-correlations & stats & cor.test()\\
-\hline
-partial correlations & ppcor & pcor.test()\\
-\hline
-binomial CI & rlocal & cibinom()\\
-\hline
-poisson CI & survival & cipoisson()\\
-\hline
-t-tests & stats & t.test()\\
-\hline
-Wilcoxon/Kolmogorov-Smirnov test & stats & wilcox.test(), ks.test()\\
-\hline
-linear regression & stats & lm()\\
-\hline
-logistic regression & stats & glm(, family=binomial)\\
-\hline
-poisson regression & stats & glm( , family=poisson)\\
-\hline
-negative binomial regression & MASS & glm.nb()\\
-\hline
-cox regression & survival & coxph()\\
-\hline
-quantile regression & quantreg & rq()\\
-\hline
-robust regression & MASS & rlm()\\
-\hline
-generalized additive regression & gam & gam()\\
-\hline
-create table from multiple models & arsenal & modelsum()\\
-\hline
-linear mixed effects (random slope) model & nlme & lme()\\
-\hline
-person-years analysis & survival & pyears()\\
-\hline
-incidence rates & rlocal & poprates()\\
-\hline
-\end{tabular}
-\end{table}
+|task                                    |package      |function              |
+|:---------------------------------------|:------------|:---------------------|
+|summarize dataset                       |summarytools |dfSummary()           |
+|create data from m, d, y                |arsenal      |mdy.Date()            |
+|compare 2 datasets                      |arsenal      |comparedf()           |
+|transpose data                          |tidyr        |gather() and spread() |
+|create categorical data from continuous |base         |cut()                 |
+|X in ('a','b','c')                      |base         |%in%, match()         |
+|X NOT in ('a','b','c')                  |arsenal      |%nin%                 |
+|concatenate strings                     |base         |paste0()              |
+
+
+
+Table: (\#tab:unnamed-chunk-4)Modeling and Statistical Tests
+
+|task                                      |package  |function                 |
+|:-----------------------------------------|:--------|:------------------------|
+|table 1, unpaired data                    |arsenal  |tableby()                |
+|table 1, paired data                      |arsenal  |paired()                 |
+|correlations                              |stats    |cor.test()               |
+|partial correlations                      |ppcor    |pcor.test()              |
+|binomial CI                               |rlocal   |cibinom()                |
+|poisson CI                                |survival |cipoisson()              |
+|t-tests                                   |stats    |t.test()                 |
+|Wilcoxon/Kolmogorov-Smirnov test          |stats    |wilcox.test(), ks.test() |
+|linear regression                         |stats    |lm()                     |
+|logistic regression                       |stats    |glm(, family=binomial)   |
+|poisson regression                        |stats    |glm( , family=poisson)   |
+|negative binomial regression              |MASS     |glm.nb()                 |
+|cox regression                            |survival |coxph()                  |
+|quantile regression                       |quantreg |rq()                     |
+|robust regression                         |MASS     |rlm()                    |
+|generalized additive regression           |gam      |gam()                    |
+|create table from multiple models         |arsenal  |modelsum()               |
+|linear mixed effects (random slope) model |nlme     |lme()                    |
+|person-years analysis                     |survival |pyears()                 |
+|incidence rates                           |rlocal   |poprates()               |
